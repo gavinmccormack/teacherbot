@@ -51,8 +51,12 @@ urlpatterns = [
 	url(r'^(?P<cbot_id>[0-9]+)/pa-compile/$', views.compile_pandora_bot, name='pa_compile'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-talk/$', views.talk_pandora_bot, name='pa_talk'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-list/$', views.file_list_pandora_bot, name='pa_list'),
-	url(r'^(?P<cbot_id>[0-9]+)/pa-archive/$', views.pandora_archive, name='panda-test'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-delete/$', views.delete_pandora_file, name='panda-delete'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-delete-all/$', views.delete_all_pandora_file, name='panda-delete-all'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-upload/$', views.upload_pandora_config, name='panda-upload'),
+
+	#Gavin's Debugging PandoraAPI actions
+	url(r'^list-all/$', views.list_pandora_bots, name='panda-list-all'),
+	url(r'^(?P<cbot_id>[0-9]+)/pa-list-debug/$', views.get_active_files_debug, name='panda-list-files'), # To replace old listing mechanism
+	url(r'^(?P<cbot_id>[0-9]+)/debug/$', views.debug_pandora_bot, name='panda-list-files'), # Is actually a debugging function.
 ]

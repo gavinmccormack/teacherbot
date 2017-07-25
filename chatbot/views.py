@@ -17,6 +17,7 @@ import os.path
 
 from chatbot.script import log
 
+from django.http import JsonResponse
 
 
 ################################################################
@@ -128,19 +129,6 @@ def chatbot_remove_setup(request, cbot_id, setup_id):
 ###################### Pandora Actions #########################
 ### These views are referenced via an ajax call from specific templates
 
-@login_required
-def pandora_archive(request, cbot_id):
-    """ Upload an archive file; normally accessed indirectly """
-    pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
-    if request.method == 'POST':
-        form = PandoraUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            pa.upload_archive(pa_name, request.FILES['archivefile'])
-            return HttpResponseRedirect('/chatbot/' + cbot_id)      ### Not correct
-    else:
-        form = PandoraUploadForm()
-    return render(request, 'pandora_management.html', {'form': form})
-
 
 def upload_pandora_config(request, cbot_id):
 	""" Upload the attached aiml configurations from the internal Setup database """
@@ -221,11 +209,48 @@ def compile_pandora_bot(request, cbot_id):
     response = pa.pandora_compile_bot(pa_name)
     return HttpResponse(response)
 
+
+################################################################
+###################### Debugging Views #########################
+### Gavin's views to debug the pandorabots API while it is changed over to a JSON format.
+
+
+@login_required
+def list_pandora_bots(request):
+    """ Returns a list obj of all the bots on pandora"""
+    response = pa.list_all()
+    output = "<br />".join(response)
+    return HttpResponse( output )
+
+@login_required
+def get_active_files(request, cbot_id):
+    """ Returns a list of the current files for a specific bot on pandora """
+    pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
+    response = pa.get_attached_files(pa_name)
+    return JsonResponse( response , safe=False)
+
+@login_required
+def get_active_files_debug(request, cbot_id):
+    """ Returns a list of the current files for a specific bot on pandora """
+    pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
+    response = pa.get_attached_files(pa_name)
+    return JsonResponse( response , safe=False)
+
+@login_required
+def debug_pandora_bot(request, cbot_id):
+    """ Runs the debugging function in the pandora library; simulating a quick talk event """
+    pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
+    response = pa.pandora_debug_bot(pa_name)
+    output = ""
+    for key in response:
+        output += '<li> %s = %s </li>' % (key, response[key])
+    return HttpResponse( output )
+
 ################################################################
 ###################### Internal Actions ########################
 
 @login_required
-def chatbot_activate_toggle(request, cbot_id):
+def chatbot_activate_toggle(request, cbot_id): #toggle_chatbot
     """ Toggles the "Enabled" state of chatbot, i.e whether it should be run with cron """
     try:
         chatbot = cbot.twitterbot_manager.get(pk=cbot_id)
@@ -244,7 +269,7 @@ def chatbot_activate_toggle(request, cbot_id):
         return HttpResponse("The system was unable to toggle bot activity; please contact a system administrator with these details: " + str(e))
 
 @login_required 
-def chatbot_get_chatlog(request, cbot_id):
+def chatbot_get_chatlog(request, cbot_id): #get_chatlog
     try:
         file_location = os.path.join(os.path.dirname(__file__),"script", "chatlogs" , cbot_id,'queriestobot.txt')
         queryfile = open(file_location)

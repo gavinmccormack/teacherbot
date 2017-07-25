@@ -1,6 +1,4 @@
 import requests
-import log
-import re
 
 host_base = "https://"
 
@@ -23,11 +21,11 @@ def list_bots(user_key, app_id, host):
     if response.ok:
         result = response.json()
         if result:
-            output = "Number of bots:  " + str(len(result)) + '\n'
+            output = []
             for elt in range(len(result)):
-                output += result[elt]['botname'] + '\n'
+                output.append( result[elt]['botname'] )
         else:
-            output = 'App with ID ' + app_id + ' has no bots!'
+            output = [False] # Return a false array if no chatbots
     else: 
         output = '%d %s' % (response.status_code, response.reason)
     return output
@@ -48,13 +46,8 @@ def delete_bot(user_key,app_id,host,botname):
 def upload_file(user_key,app_id,host,botname,filename):
     path = '/bot/' + app_id + '/' + botname + '/'
     filepath = filename
-    filename = filename.split('/')[-1]
-    if '(' in filename:
-        filename = re.sub(r'\(v[0-9]+\)', '', filename)
-    if 'pand_' in filename:
-        filename = filename.replace('pand_', '')
-    if '_' in filename:
-        filename = filename.replace('_', '')
+    if '/' in filename:
+        filename = filename.split('/')[-1]
     file_kind = filename.split('.')[-1]
     if file_kind == 'pdefaults' or file_kind =='properties':
         path += file_kind
@@ -63,8 +56,8 @@ def upload_file(user_key,app_id,host,botname,filename):
     if file_kind == 'aiml':
         path += 'file/' + filename
     if path == '/bot/' + app_id +'/' + botname + '/':
-        output = 'File type must be one of the following: substitution, properties, aiml, map, set, or pdefaults'
-        return output
+            output = 'File type must be one of the following: substitution, properties, aiml, map, set, or pdefaults'
+            return output
     url = host_base + host + path
     data = open(filepath,'rb').read()
     query = {"user_key": user_key}
@@ -79,38 +72,8 @@ def list_files(user_key, app_id, host, botname):
     url = host_base + host + path
     query = {"user_key": user_key}
     response = requests.get(url,params=query)
-    output=""
     if response.ok:
-        response_dict = response.json()
-        if response_dict['files']:
-            aiml_files=""
-            for num in range(len(response_dict['files'])):
-                aiml_files += str(response_dict['files'][num]['name']) + '\n'
-            output +=  aiml_files
-        if response_dict['substitutions']:
-            substitution_files=""
-            for num in range(len(response_dict['substitutions'])):
-                substitution_files += str(response_dict['substitutions'][num]['name']) + '\n'
-            output += substitution_files
-        if response_dict['maps']:
-            map_files = ""
-            for num in range(len(response_dict['maps'])):
-                map_files += str(response_dict['maps'][num]['name']) + '\n'
-            output += map_files
-        if response_dict['sets']:
-            set_files = ""
-            for num in range(len(response_dict['sets'])):
-                set_files += str(response_dict['sets'][num]['name']) + '\n'
-            output += set_files
-        if response_dict['properties']:
-            properties_files = ""
-            for num in range(len(response_dict['properties'])):
-                properties_files += str(response_dict['properties'][num]['name']) + '\n'
-            output += properties_files
-        if response_dict['pdefaults']:
-            pdefaults = ""
-            pdefaults += str(response_dict['pdefaults'][0]['name']) + '\n'
-            output += pdefaults
+        output = response.json()
     else:
         output = response.reason
     return output
@@ -228,6 +191,13 @@ def talk(user_key, app_id, host, botname, input_text, session_id=False, recent=F
     return output
 
 
-def debug_bot(user_key, app_id, host, botname, input_text, session_id='', recent=False, reset=False, trace=False):
-    response = talk(user_key, app_id, host, botname, input_text, session_id, recent, reset, trace)
-    return response
+def debug_bot(user_key, app_id, host, botname, input_text="Hello Chatbot", session_id='', recent=True, reset=False, trace=True,clientID=True):
+    path = '/talk/' + app_id + '/' + botname
+    url = host_base + host + path
+    query = {"user_key": user_key,
+             "input": input_text,
+             "trace": True
+             }
+    response = requests.post(url, params=query)
+    result = response.json()
+    return result

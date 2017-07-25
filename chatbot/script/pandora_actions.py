@@ -16,15 +16,19 @@ import os
 import json
 import log
 
+import pb_api_json as pbAPI
+
 ### Call from Django Database
 app_id = pandora_settings.objects.get().app_id
 user_key = pandora_settings.objects.get().user_key
 host = pandora_settings.objects.get().host
 botname = 'Notabot' ### Temp variable for dev
 
-
-
-
+###############
+### List all bots
+### Deployed from /chatbot/list-all/
+def list_all():
+	return pbAPI.list_bots(user_key, app_id, host)
 
 ###############
 ### Create Bot
@@ -33,8 +37,6 @@ def create_bot(pa_botname):
 	API.create_bot(user_key, app_id, host, pa_botname)
 	create = API.compile_bot(user_key, app_id, host, pa_botname) ## Also compile here, to minimize front end
 	return str(create)
-
-
 
 ###############
 ### Download Files
@@ -50,19 +52,38 @@ def pandora_download(pa_botname):
 	    return str(error)
 
 
+###############
+### Download Files
+def get_attached_files(pa_botname):
+	filelist = pbAPI.list_files(user_key, app_id, host, pa_botname)
+	return filelist
 
+
+def pandora_debug_bot(pa_botname):
+	result = pbAPI.debug_bot(user_key, app_id, host, pa_botname)
+	return result
 
 ###########################################################################################################
 ### File listing + Light html parsing 
 ### This function is probably pretty poorly conceived, and takes some of the HTML language away from the template due to API handling
 
 def pandora_list_files_short(pa_botname):
-	filelist = API.list_files(user_key, app_id, host, pa_botname)
-	filelist = filelist.split('\n')
+	filelist = pbAPI.list_files(user_key, app_id, host, pa_botname)
 	output = "<div class='file-list'>"
-	for a in filelist[:-1]:
+	filelist = get_filenames(filelist)
+	for a in filelist:
 			output = (output +" <div class='file-block'><span>" + a + "</span></div>")
 	return output + "</div>"
+
+def get_filenames(filelist_object):
+	# Takes json file list and sits out list of file names
+	filenames = []
+	file_types = ['files', 'maps', 'properties', 'pdefaults', 'sets', 'substitutions']
+	for dict_element in filelist_object:
+		if dict_element in file_types:
+			for i in range(len(filelist_object[dict_element])):
+				filenames.append(filelist_object[dict_element][i]['name'])
+	return filenames
 
 
 ### PandoraBot Talk
@@ -103,25 +124,6 @@ def pandora_delete_all_files(pa_botname):
 
 
 ###############
-
-def flatten(directory):
-    if (os.path.exists(directory)):
-        for root, subdirs, files in os.walk(directory):
-            for file in files:
-                print file
-                print os.path.join(directory, file)
-                os.path.join(root,file)
-                os.rename(os.path.join(root,file), os.path.join(directory, file))
-            if len(os.listdir(root)) == 0:
-            	os.rmdir(root)
-    if len(os.listdir(directory)) == 0:
-            	os.rmdir(directory)
-
-
-def pandora_upload_single_file(pa_botname, path):
-	""" Uploads a single file, used internally from view by Django files """
-	API.upload_file(user_key, app_id, host, pa_botname, path)
-
 def pandora_upload_files_from_path(pa_botname, file_list):
 	""" Upload single files from an array of paths """
 	# Counter for successful uploads
@@ -139,49 +141,6 @@ def pandora_upload_files_from_path(pa_botname, file_list):
 			file_errors[name] = error
 	return success_response, file_errors
 
-def pandora_upload(pa_botname, directory):
-	""" Uploads a directory of files to pandora """
-	patterns=['*.aiml','*.set','*.map','*.substitution','*.pdefaults','*.properties']
-	
-	pandora_delete_all_files(pa_botname)
-	for p in patterns:
-	    for filenames in os.listdir(directory):
-	        if fnmatch.fnmatch(filenames, p):
-	        	path = os.path.join(directory,filenames)
-	        	result = API.upload_file(user_key, app_id, host, pa_botname, path)
-	        else:
-	        	flatten(directory) # If not a file then a folder, or whoever put the zip together was a meathead.
-
-	result = API.compile_bot(user_key, app_id, host, pa_botname)
-	if 'successfully' in result:
-	    for root, subdirs, filenames in os.walk(directory):
-	        for filename in filenames:
-	            path = os.path.join(directory,filename)
-	            os.remove(path)
 
 
-
-### Upload wrapper function. First to be referenced on URL request.
-def upload_archive(pa_name, f):
-	"""Extracts files, performs the API upload for single files, but otherwise passes to pandora_upload(x,y)"""
-	filename, file_type = os.path.splitext(f.name)
-	pth = os.path.abspath(os.path.dirname(__file__))
-	pa_file_types = ['.aiml', '.substitutions', '.maps', '.sets', '.properties', '.pdefaults'] ## File types that should be uploaded immediately.	
-	### Open the file object passed, write it to a file in the temporary directory, and then pass that path to the python pb api call.
-	if file_type in pa_file_types:
-		single_file = os.path.join(pth, filename + file_type)
-		pth = os.path.join(pth,"temporaryfiles" , pa_name , f.name)
-		tempFile = open(pth, 'w')
-		tempFile.write(f.read())
-		result = API.upload_file(user_key, app_id, host, pa_name, pth)
-		API.compile_bot(user_key, app_id, host, pa_name)
-		return result
-	### If file is archive. Only handles zips at the moment.
-	if file_type == ".zip":
-		pth = os.path.join(pth,"temporaryfiles" , pa_name,  "")
-		archive = zipfile.ZipFile(f)
-		with zipfile.ZipFile(f) as out:
-			out.extractall(pth)
-
-	pandora_upload(pa_name, pth) 
 

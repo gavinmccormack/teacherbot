@@ -148,10 +148,18 @@
 		 }
 
 		 function load_active_files() {
-					$.get('/chatbot/'+{{ chatbot.id }}+'/pa-list/', function (data) {
-					$( ".active-files" ).html( data.replace(/(?:\r\n|\r|\n)/g, '<br />') ); // Python STR \n's to <br>
+
+					$.get('/chatbot/'+{{ chatbot.id }}+'/pa-list-debug/', function (data) {
+						console.log(data);
+
+						result = "";
+						for (i = 0 ; i < data.length ; i++) {
+							result = result + data[i]['name'];
+						}
+						console.log(result);
+						$( ".active-files" ).html(result); // Python STR \n's to <br>
 					});
-				}
+		}
 
 		$(document).ready(function() {
 
