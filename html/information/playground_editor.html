@@ -1,0 +1,330 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<h3>What is the Pandorabot Playground?</h3>
+
+<table class="table table-inverse table contents pull-left">
+			  <thead class="thead-inverse">
+			    <tr><th>Guide Contents</th></tr>
+			  </thead>
+			  <tbody>
+			  	<tr><td><a href="#creating-and-uploading">Create & Upload a bot</a></td></tr>
+			    <tr><td><a href="#changing-responses">Changing Responses</a></td></tr>
+			    <tr><td><a href="#adding-responses">Adding Responses</a></td></tr>
+			    <tr><td><a href="#wildcards">Wildcards</a></td></tr>
+			    <tr><td><a href="#alt-responses">Alternative Responses</a></td></tr>
+			    <tr><td><a href="#sets">Sets</a></td></tr>
+			    <tr><td><a href="#maps">Maps</a></td></tr>
+                <tr><td><a href="#that-topic">That & Topic</a></td></tr>
+			  </tbody>
+			</table>
+
+
+<p>The Pandorabot Playground provides a Graphical User Interface to create new and change existing rules in your Teacherbot’s knowledge database. If you don’t feel comfortable coding directly in AIML, this editor will help you write basic rules. This documentation will help you create and maintain a Teacherbot with the Pandorabot Playground GUI. As a pre-requisite to fully benefit from this documentation, we recommend to read the Pandorabot Playground Tutorial, which you can find <a href="https://playground.pandorabots.com/en/tutorial/"> here</a>. Our documentation is an extension to this and provides additional information and useful tips and tricks, but you will have to read up on the basics in the Playground Tutorial if you want to create more complex rules. You can easily spend a few days on the extensive tutorial, but to get you going with the basics it might only need a couple of hours.</p>
+<p>The Pandorabot Playground is independent of our Teacherbot managament website and not linked to it in any way. You have to create a separate account for yourself on the Pandorabot Playground in order to train and test the knowledge base of your Teacherbot. The Playground allows testing your knowledge base and adding more knowledge to it, but it doesn’t allow you to upload the database to the server. In order for your changes to go live, you have to download your files from the Pandorabot Playground and upload it to the server via the Teacherbot management website.</p>
+
+
+ 
+ <section id="creating-and-uploading">
+<h3>Creating a Teacherbot on the Playground</h3>
+<p>To get started, go to the <a href="https://playground.pandorabots.com/">Pandorabot Playground website</a> and register for an account. Once you have done this, click on <strong>My Bots</strong> in the blue header menu and create a new Bot by clicking on <strong>Create Bot</strong>.</p>
+
+<div class="guide-image">
+<img src="/static/images/createbot.png"></img>
+</div>
+<br>
+<p>Now you can start filling your Teacherbot with content. Click on the name of the Teacherbot you just created and inspect the Editor that shows up. Go to <strong>Files</strong>.</p>
+
+<div class="guide-image">
+<img src="/static/images/upload.png"></img>
+</div>
+<br>
+<p>You will see that some default files will already be there. You could start by building a system from scratch, but if you'd like to implement some chit-chat, you can import the open-source database <a href="https://github.com/pandorabots/rosie/">Rosie</a>. This knowledge base forms a general base for any Teacherbot and contains some basic small talk and answers to user inputs that test the Teacherbot's intelligence. For a more detailed description of Rosie's package contents, have a look <a href="http://blog.pandorabots.com/rosie-customizable-base-content/">here</a>. Rosie also comes with a customisable <strong>properties</strong> file. We will explain in more detail what this means later, for now you only need to remember that there are certain characteristics of your Teacherbot that you can personalise. We have already changed this file to make it more Teacherbot-like and improved some other bits and pieces, and we therefore recommend to use <a href="http://bit.ly/1qxY2IS">our package</a> instead. On the given URL you will find a <strong>master folder</strong> with two sub-folders: <strong>lib-pandorabot</strong> and <strong>lib-teacherbot</strong>. <strong>lib-pandorabot</strong> contains Rosie's knowledge and <strong>lib-teacherbot</strong> additional Teacherbot knowledge that we found useful. This folder will constantly be uploaded with new knowledge. Alternatively, you can create your own bot from scratch.</p>
+</section>
+<h3>Uploading Knowledge</h3>
+<p>In order to upload new knowledge to your Teacherbot, click on the <strong>Upload Files</strong> button in the Editor and then <strong>Add Files</strong> in the pop-up window. Select all files from the Rosie Teacherbot package (optional) and wait until all files have been uploaded. You are now ready to customize your Teacherbot! Alternatively, you can start building your own knowledge base if you do not want to include any pre-defined knowledge. However, if you'd like to practise using the Playground, the package is a good way to start and some examples we provide in these guidelines assume that  you have it installed.</p>
+
+<div class="guide-image">
+<img src="/static/images/file_upload.png"></img>
+</div>
+<br>
+<h3>Adding Knowledge to the Teacherbot</h3>
+<section id="changing-responses">
+<h3>Changing Responses</h3>
+<p>If you are already familiar with AIML and just want to upload your scripts to the Playground, you can skip this part. The following guidelines are for working with the GUI. There are several ways to add knowledge to your Teacherbot using the GUI. We will start with the easy option of changing responses and then gradually move on to more complex matters. Go to <strong>Train</strong> in the Playground Editor.</p>
+
+<div class="guide-image">
+<img src="/static/images/ask.png"></img>
+</div>
+<br>
+<p>On the left side of the window is an input field with the heading <strong>Human</strong>. Ignore the two input fields on the right hand side for now (<strong>Current That</strong> and <strong>Current Topic</strong>), you can read about this in the <a href="https://playground.pandorabots.com/en/tutorial/">Pandorabot Playground Tutorial</a>. You can test your knowledge base by submitting an input. For example, enter the question <i>How are you?</i> and click <strong>Ask</strong>. (Note that this example will only work if you upload the Rosie Teacherbot files.) </p>
+
+<div class="guide-image">
+<img src="/static/images/input_response.png"></img>
+</div>
+<br>
+<p>You will see a dialogue showing up below the input field. This contains:</p>
+
+<ul>
+<li>Your question <i>How are you?</i></li>
+<li>The rule it matched</li>
+<li>The Teacherbot's response to your question</li>
+</ul>
+
+<p>Next to the matched rule you will also find a link to the file in which the rule is defined, in this case <strong>personality.aiml</strong>. You can click on the file name to inspect the file and see what the rules look like in AIML. If you feel comfortable doing so, you can also change the Teacherbot's responses in this file, but if that looks too cryptic, don't worry. To change a Teacherbot's response in the GUI, enter an alternative response in the field above <strong>Say Instead</strong> and click on <strong>Say Instead</strong>. The new response is saved, and the old one deleted.</p>
+
+<p>In order to make your Teacherbot appear more intelligent, you can also add a variety of different responses that will be randomized, so the Teacherbot doesn't always give the same answer when asked <i>How are you?</i>. In order to do this, click on <strong>Advanced Alter Response</strong>.</p>
+
+<div class="guide-image">
+<img src="/static/images/advancedalter.png"></img>
+</div>
+<br>
+<p>Another window appears at the bottom of the editor, you want to change the content of the <strong>Template</strong> box. Alternative responses are between &lt;li&gt; &lt;&#47;li&gt; tags and these are nested between the tags &lt;random&gt;&lt;&#47;random&gt; within your template. For example, here is a set of randomised responses to the question <i>How are you?</i>:</p>
+
+<code>
+&lt;template&gt; <br>
+&lt;random&gt; <br>
+&lt;li&gt; I'm very well. How are you doing?&lt;&#47;li&gt; <br>
+&lt;li&gt; Glad to see you.&lt;&#47;li&gt; <br>
+&lt;li&gt; Always cheered up when I see you.&lt;&#47;li&gt; <br>
+&lt;&#47;random&gt; <br>
+&lt;&#47;template&gt; <br>
+</code>
+
+<p>Make sure that the randomised responses always follow this pattern. Now that you have learned some basic AIML, you can also go to the .aiml file directly and make changes within the file. This is much faster because you don't have to ask a question first before you can edit responses, and it works in exactly the same way!</p>
+<section id="adding-responses">
+<h3>Adding new questions and responses</h3>
+<p>Adding your own set of questions and answers works similar to changing existing responses. Go to <strong>Train</strong> in the Playground Editor and type the question you would like the Teacherbot to understand into the entry field on the left. For now, let's take the example <i>Teacherbot, I can't find the lecture notes anywhere!</i>
+If no matching rule exists, this input will match <strong>&#42;</strong>, and anything that matches <strong>&#42;</strong> will run to the <strong>Ultimate Default Category</strong>, which means the Teacherbot will point out that it didn't understand the user.</p>
+
+<div class="guide-image">
+<img src="/static/images/safetynet.png"></img>
+</div>
+<br>
+<p>We want to avoid this and add a new response to the Teacherbot. Click on <strong>Advanced Alter Response</strong>.</p>
+
+<div class="guide-image">
+<img src="/static/images/addnewreply.png"></img>
+</div>
+
+<p>Remove all existing content from the entry fields. This is very important if you want your input/output to work! If you are not able to remove content from the <strong>THAT</strong> field, tick the box <strong>Depends on last response</strong>, then remove the content from the <strong>THAT</strong> field, untick the box <strong>Depends on last response</strong>. 
+
+Add your question to the <strong>Pattern</strong> field if it's not already in there. Then type your desired response into the <strong>Template</strong> box. You can add alternative responses using the &lt;li&#47;&gt;&lt;&#47;li&gt; tags as explained in the previous section <strong>Changing Responses</strong>. When you're done, click <strong>Submit</strong>. You can have a look at the .aiml that contains your new rule by going to the <strong>Files</strong> tab, then look for the file <strong>pand&#95;learn</strong> in the AIML folder. This file gets filled with all the rules you create via the GUI. If you create many different rules, you could consider creating various AIML files that cover specific topics. You can also create AIML files with a text editor and then upload them to your Playground, you don't have to use the GUI.</p>
+
+<div class="guide-image">
+<img src="/static/images/aiml.png"></img>
+</div>
+
+
+<h3>More Complex Patterns</h3>
+<p>In the previous sub-section we learnt how to add new knowledge to our database. However, the pattern we used to match the user input is very basic. In fact, it is so basic that only inputs that look exactly the same will be understood by the Teacherbot. In our example case, only if the user inputs <i>Teacherbot, I can't find the lecture notes anywhere</i>, the Teacherbot will be able to understand what the user wants. This is not practical. What if the user asks, <i>Where are the lecture notes?</i> We would probably want the same response from the Teacherbot in this case. Let's see how we can solve this.</p>
+
+<p>We could come up with a large amount of possible patterns that the user might input as a question to the Teacherbot. We could add each of these as a pattern/template pair. But then we would end up with a large number of pattern/template pairs. While this is easy to do, it is difficult to maintain. Imagine you want to change the response to that question because the location of your lecture notes changed. You would have to change the response in each of your pattern/template pairs! 
+Thankfully, the Pandorabot Platform offers a much neater solution. However, you have to dive a bit into the rules and conditions you have at your disposal, which is why we recommend you read the <a href="https://playground.pandorabots.com/en/tutorial/">Pandorabot Playground Tutorial</a>.</p>
+<section id="wildcards">
+<h3>Wildcards</h3>
+<p>If you have read the tutorial, you have come across the notion of <strong>wildcards</strong>. So if you have a variety of different user inputs in mind that are somewhat similar, you can use wildcards to write your <strong>pattern</strong>.
+Remember that wildcards can represent one or more user inputs (if <strong>&#42;</strong> is used) or zero or more user inputs (if <strong>&#94;</strong> is used). Note that there should be a white space between the wildcard and the preceding/following words. Let's look at an example:</p>
+<br>
+<code>
+<i>&#94; WHERE &#42; LECTURE NOTES &#94;</i>
+</code>
+<br>
+
+<p>If you use this pattern, your Teacherbot will understand the following user inputs:</p>
+
+<ul>
+<li><i>Where are the lecture notes?</i></li>
+<li><i>Teacherbot, where are the lecture notes?</i></li>
+<li><i>Hey Teacherbot, where can I find the lecture notes for the online learning course?</i></li>
+</ul>
+
+<p>If you used <strong>&#42;</strong> instead of <strong>&#94;</strong> at the beginning and the end of the pattern, then it would only match if something precedes <i>WHERE</i> and follows <i>NOTES</i>. The <strong>&#94;</strong> makes surrounding text optional because it matches zero or more inputs. It might be useful to use <strong>&#94;</strong> at the beginning and end of each pattern, but it depends on how similar your input patterns are. If you code too loosely, a pattern might match inputs it shouldn't match. For example, if you offer several classes and a student asks for material about a specific subject, you might want to include this in the pattern instead of using a wildcard.</p>
+    
+<section id="alt-responses">
+<h3>Alternative Responses</h3>
+<p>This answers the question how to make patterns more flexible, but we still don't know how to make things easier if two user inputs are very different. In our case, the examples are 
+</p>
+<ul>
+<li><i>Teacherbot, I can't find the lecture notes anywhere!</i></li>
+<li><i>Where are the lecture notes?</i></li>
+</ul>
+    
+<p>There is a very neat solution to this. We can write one question/answer or pattern/template pair. Then we can write another pattern and link back to the first one. We can do this as many times as we like and always put a link to our main pattern/template pair. This way, if we wanted to change the Teacherbot's reply, we only have to do it once. Let's have a closer look at this.</p>
+
+<p>Let's suppose we have already created a pattern for </p>
+<code>
+<i>&#94; WHERE &#42; LECTURE NOTES &#94;</i>
+</code>
+
+<p>We go to the <strong>Train</strong> tab in the Playground Editor. Type another pattern into the entry field, for example</p>
+
+<code>
+<i>&#94; FIND &#42; LECTURE NOTES &#94;</i>
+</code>
+
+<p>Then, click on <strong>Advanced Alter Response</strong> and in the <strong>Template</strong> box write:</p>
+
+<code>
+<i>&lt;srai&gt;&#94; WHERE &#42; LECTURE NOTES &#94;&lt;&#47;srai&gt;</i>
+</code>
+<br>
+<div class="guide-image">
+<img src="/static/images/srai.png"></img>
+</div>
+<br>
+<p>The &lt;srai&gt;&lt;&#47;srai&gt;tags are used to link to the response of the pattern <i>&#94; WHERE &#42; LECTURE NOTES &#94;</i>. Therefore you have to make sure that the text between the &lt;srai&gt;&lt;&#47;srai&gt;tags matches exactly the same pattern as that of your main pattern you are linking to. You can have a look at the file <strong>pand	&#95;learn</strong> in the AIML folder if you want to learn how to write this in AIML.</p>
+
+<section id="sets">
+<h3>Sets</h3>
+<p>Sometimes, if you have many alternatives for a possible user input, typing all these different patterns becomes a bit tedious. Imagine, you have a student asking for lecture notes, they could ask:</p>
+
+<ul>
+<li><i>Where are the lecture notes?</i></li>
+<li><i>Where is the lecture material?</i></li>
+<li><i>Where are the slides from the lecture XY?</i></li>
+</ul>
+
+<p>Instead of making a pattern/template pair for all of these, wouldn't it be nice if we could use a box of synonyms and put everything into one pattern? <strong>Sets</strong> allow us to do this. <strong>Sets</strong> are files that contain lists of items from the same category, for example <i>animals</i>, <i>colours</i> or <i>learning material</i>.
+You can find <strong>Sets</strong> under the <strong>Files</strong> tab. If you are not using the Rosie Teacherbot package, then this category will be empty, but you can create a new <strong>Set</strong> file by clicking on <strong>Create File</strong> (the "PLUS" symbol). Make sure to select <strong>Set</strong> from the drop-down menu. A blank page appears on the right hand side along with a box called <strong>item</strong>.</p>
+
+<div class="guide-image">
+<img src="/static/images/sets.png"></img>
+</div>
+<br>
+<p>You can add words to your set by typing a word into the <strong>item</strong> box and pressing <strong>enter</strong>. Words have to be added one by one (one word per line in the Editor). Only group words together into one set that have a similar meaning. If you want to add another set you have to create a new file. Make sure to add the singular and plural version of each word and if you notice from your log files that users frequently misspell a word, it is also a good idea to include words with spelling errors. Let's suppose you have filled a file called <strong>lecturematerial</strong> with the words <i>slides</i>,<i>notes</i>,<i>resources</i>. You include your <strong>Set</strong> like this:</p>
+<br>
+<code>
+<i>&#94; WHERE &#42; &lt;set&gt;lecturematerial&lt;&#47;set&gt;&#94;</i>
+</code>
+<br>
+<p>Now your Teacherbot is able to understand all inputs that refer to different words for <i>lecture material</i> in your <strong>Set</strong>. You could make a different <strong>Set</strong> for words or phrases that users might use to ask for where to find something. For example, make a <strong>Set</strong> called <i>whereis</i> and include <i>I can't find</i>, <i>where is</i>, <i>where do I find</i>, <i>help me find</i> and anything else you can think of. Be careful not to use patterns that are too strict to allow for some flexibility but don't make them too flexible to avoid ambiguity. Now you can use the following in your pattern:</p>
+<br>
+<code>
+<i>&#94; &lt;set&gt;whereis&lt;&#47;set&gt; &#42; &lt;set&gt;lecturematerial&lt;&#47;set&gt;&#94;</i>
+</code>
+<br>
+<p>It is useful to include wildcards in the actual pattern to allow for the recognition of full sentences. Your Teacherbot is now able to understand many similar user inputs!
+<strong>Sets</strong> can be used for a variety of scenarios. Be creative and see what you can come up with!</p>
+
+<p><strong>NOTE</strong>: If you use the Playground Editor to add knowledge to your Teacherbot rather than coding directly in AIML, the &lt;set&gt;&lt;&#47;set&gt; tags will not be translated into AIML. In this case, they will show up as <strong>SET LECTURENOTES SET</strong> in the AIML file. We therefore advise not to build Sets with the GUI and code in AIML directly.</p>
+
+<section id="maps">
+<h3>Maps</h3>
+<p><strong>Maps</strong> function as look up tables or dictionaries. They are similar to <strong>Sets</strong> but have key-value pairs. They are useful if you have a list of events with corresponding dates (e.g. deadlines for different assignments) or a list of resources with corresponding web links. Let's look at an example. Imagine you are building a Teacherbot for a seminar and the students have to take 3 assignments. In the <strong>Editor</strong> under the <strong>Files</strong> tab, create a new file and select <strong>Map</strong> from the drop-down menu. You can add the name of your assignment into the <strong>Name</strong> field and the date of the deadline into the <strong>Value</strong> field. Press enter and then do the same for assignment 2 and assignment 3. Note that a name always needs a value, name and value only come in pairs!</p>
+
+
+<div class="guide-image">
+<img src="/static/images/map.png"></img>
+</div>
+<br>
+<p>The <strong>Map</strong> you just created only manages the response of the Teacherbot and functions as a lookup table. This way, the Teacherbot will know that Assignment 1 is on March 23rd but we have to make sure that the user input is understood as well. This is done with the help of a <strong>Set</strong>. You can create a set as explained previously and fill it with all your assignments:</p>
+
+<div class="guide-image">
+<img src="/static/images/set.png"></img>
+</div>
+<br>
+<p>If there are several possible names for your assignments, include them all in your <strong>Set</strong> and make separate mappings for them in your <strong>Map</strong> file.
+Now you can write a pattern and template that includes your <strong>Set</strong> and <strong>Map</strong>. Go to the <strong>Train</strong> tab in the Pandorabot Playground. Into the <strong>Ask</strong> box, write </p>
+
+<code>
+<i>When is the deadline for the &lt;set&gt;assignments&lt;&#47;set&gt;</i>
+</code>
+<br>
+<p>The Teacherbot will have no answer to this, so click on <strong>Advanced Alter Response</strong> and into the <strong>Template</strong> field write:</p>
+
+<code>
+<i>The deadline for &lt;star&#47;&gt;is &lt;map name="assignments"&gt;&lt;star&#47;&gt;&lt;&#47;map&gt;</i>
+</code>
+<br>
+<p>The &lt;star&#47;&gt; tags function as  place holders for the missing words to be inserted. Think of it as a cloze with the &lt;star&#47;&gt; tags being the blanks.</p>
+<p>
+<strong>NOTE</strong>: If you use the Playground Editor to add knowledge to your Teacherbot rather than coding directly in AIML, the &lt;set&gt;&lt;&#47;set&gt; tags will not be translated into AIML. In this case, they will show up as <strong>SET ASSIGNMENT SET</strong> in the AIML file. We therefore advise not to build Sets and Maps with the GUI and code in AIML directly.</p>
+
+<p>Sometimes, a student might ask for an assignment deadline that is not in the <strong>Maps</strong> lookup table. In that case it is helpful to have a backup answer. For example, you could make a pattern that includes a wildcard, like this:</p>
+
+<code>
+<i>WHEN IS THE DEADLINE FOR &#42;</i>
+</code>
+<br>
+<p>And then in the template you would write something like this:</p>
+
+<code>
+<i>I don't know when the deadline for &lt;star&#47;&gt;is</i>
+</code>
+<br>
+
+<p>Again, the &lt;star&#47;&gt; functions as a place holder, but this time for anything the user inputs in place of the wildcard. For example, if the user asked <i>When is the deadline for the online learning exam?</i>, the Teacherbot would reply <i>I don't know when the deadline for the online learning exam is</i>. Make sure to phrase your template in a way that allows for syntactic variation in the user input. </p>
+
+<p><strong>Note:</strong> If you use more than one wildcard in your pattern, for example to make potential user inputs more flexible, you will have to <strong>index</strong> the correct wildcard. Otherwise the default reference for the output template is the first wildcard in the pattern. Let's look at an example.
+
+If your pattern is:
+
+<code>
+<i>&#94; WHEN &#42; DEADLINE FOR &#42;</i>
+</code>
+
+because you have three wildcards, your template should look like this:
+
+<code>
+<i>I don't know when the deadline for &lt;star index="3"&#47;&gt;is</i>
+</code>
+</p>
+
+<section id="that-topic">
+<h3>Advanced: That and Topic</h3>
+<p><strong>THAT</strong> and <strong>TOPIC</strong> allow your Teacherbot to remember parts of the conversation. This way you can set up  a more dialogue like conversation and make your Teacherbot appear more intelligent. While <strong>THAT</strong> only spans over the current input/output pair, a <strong>TOPIC</strong> is remembered throughout the entire conversation. For short Twitter based queries, <strong>TOPIC</strong> is probably not relevant for you. You can read more about this in the Pandorabot Tutorial. We will give you an example of how to implement <strong>THAT</strong>.</p>
+
+<p>Imagine a student is asking for the deadline of an assignment, but they don't specify what this assignment is, they only ask <i>What is the assignment deadline?</i>. We created a list of specific assignments and deadlines using <strong>Maps</strong> earlier, but the Teacherbot is not able to access it based on the student's very general question. Wouldn't it be good if the Teacherbot could ask for more information? This is possible using <strong>That</strong>.
+
+Go to the <strong>Train</strong> tab in the Pandorabot editor and make a pattern/template pair for the very general user input <i>What is the assignment deadline?</i>. The pattern could look like this:</p>
+<code>
+<i>&#94; ASSIGNMENT DEADLINE &#94;</i>
+</code>
+<br>
+<p>The template should be a question, for example:</p>
+
+<code>
+<i>Which assignment are you talking about?</i>
+</code>
+<br>
+<p>Test your pattern/template pair by typing a possible user input into the <strong>Ask</strong> field and click <strong>Ask</strong>. So far it worked exactly like making a simple pattern/template pair.</p>
+
+<div class="guide-image">
+<img src="/static/images/deadline2.png"></img>
+</div>
+<br>
+<p>Notice that, once you submitted the question <i>When is the assignment deadline?</i>, the <strong>Current That</strong> field next to the <strong>Ask</strong> box gets filled with <strong>WHICH ASSIGNMENT ARE YOU TALKING ABOUT</strong>, which is the response of the Teacherbot minus punctuation and written in upper case. This is to identify the current theme or <strong>That</strong> of the conversation.
+
+Now you can add a follow-up user input, for example one that specifies the assignment. We created a <strong>Set</strong> for this earlier, so we can simply input <i>&lt;set&gt;assignments&lt;&#47;set&gt;</i> into the <strong>Ask</strong> field.</p>
+
+<div class="guide-image">
+<img src="/static/images/udcassignment.png"></img>
+</div>
+<br>
+<p>This will go straight to the <strong>Ultimate Default Category</strong> because we haven't specified a response yet. Click on <strong>Advanced Alter Response</strong>. Leave everything as it is and add the response into the <strong>Template</strong> field as shown in the following image.</p>
+
+
+<div class="guide-image">
+<img src="/static/images/step3.png"></img>
+</div>
+<br>
+<p>Now we can have the following conversation with the Teacherbot:</p>
+
+<code>
+User: <i>When is the assignment deadline?</i><br>
+Teacherbot: <i>What assignment are you talking about?</i><br>
+User: <i>The first assignment</i><br>
+Teacherbot: <i>The deadline for the first assignment is on March 23rd.</i><br>
+</code>
+<br>
+<p>You can test this yourself in the Pandorabot Playground.
+
+We have covered the most basic and some more advanced features of the Pandorabot framework. There are more things you can try and if you're interested, have a look at the <a href="https://playground.pandorabots.com/en/tutorial/">Pandorabot Playground Tutorial</a>.
+</p>
+
+{% endblock content %}
+</div>

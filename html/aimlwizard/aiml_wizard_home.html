@@ -1,0 +1,123 @@
+{% extends "admin/base_site.html" %}
+
+
+
+{% block title %} 
+Your AIML Setups | {{ site_title|default:_('Chatbot Administration') }}
+{% endblock %}
+{% block content %}
+
+    <script> 
+
+    (function($){
+
+        equalheight = function(container){
+
+        var currentTallest = 0,
+             currentRowStart = 0,
+             rowDivs = new Array(),
+             $el,
+             topPosition = 0;
+         $(container).each(function() {
+
+           $el = $(this);
+           $($el).height('auto')
+           topPostion = $el.position().top;
+
+           if (currentRowStart != topPostion) {
+             for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+               rowDivs[currentDiv].height(currentTallest);
+             }
+             rowDivs.length = 0; // empty the array
+             currentRowStart = topPostion;
+             currentTallest = $el.height();
+             rowDivs.push($el);
+           } else {
+             rowDivs.push($el);
+             currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+          }
+           for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+             rowDivs[currentDiv].height(currentTallest);
+           }
+         });
+        }
+
+        // Making boxes in the same row the same height.
+        $(window).load(function() {
+          equalheight('.item-wrap');
+        });
+        $(window).resize(function(){
+          equalheight('.item-wrap');
+        });
+
+        $(window).load(function() {
+          equalheight('.item-wrap-2');
+        });
+        $(window).resize(function(){
+          equalheight('.item-wrap-2');
+        });
+
+    })(jQuery);
+
+    </script>
+
+<section class = 'chatbot-setup-index'>
+    <div class="col-lg-12 index-wrapper">
+        <div class="border-segment segment-blue">
+        <h3 class="index-heading bg-primary">Chatbot AIML Setups</h3>
+            <div class="border-segment-wrap">
+                {% if aiml_configs %}
+                    <ul class="aimlconfig-index container-fluid index-listing" title="Edit this Setup">
+                        {% for aiml in aiml_configs %} 
+                        <div class="col-sm-6 col-lg-3">
+                        <a href="/admin/chatbot/aiml_config/{{ aiml.id }}">
+                        <div class="config-item-wrap item-wrap-2">
+
+                            <h4 class="index-item-header">{{ aiml.title }} 
+                                <span class="pull-right" title="Number of files in this setup">
+                                    <i class="fa fa-calendar-check-o" title="Created on: {{ aiml.last_modified }}" aria-hidden="true"></i>
+                                    <i class="fa fa-file" aria-hidden="true"></i> {{ aiml.file_counts }}
+                                </span>
+                            </h4>
+                            <div class="border-segment-wrap ">
+                            {% for file in aiml.get_files %}
+                                    <div class="file-bk"><i class="fa fa-file" aria-hidden="true"></i> {{ file.get_simplename }}</div>
+                            {% endfor %}
+                            </div>
+
+
+                        </div>
+                        </a>
+                        </div>
+                        {% endfor %}
+
+
+                    </ul>
+                {% else %}
+                    <div class="bg-success not-found">
+                        <strong>You have no Setups for this bot, but you may create one or use other public configurations in the chatbot edit pages.</strong>
+
+                    </div>
+                {% endif %}
+                <a class="btn-primary btn add-chatbot-btn" href="/admin/chatbot/aiml_config/add/">Add a new Setup <i class="fa fa-user-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="container-fluid">
+<h3>Adding a setup</h3>
+    <p>The easiest way to add an AIML setup is to take it straight from your pandorabot. First make your way over to the <a href="https://playground.pandorabots.com/en/" target="_blank">pandorabot's playground</a>.</p>
+    <p>Locate your bot and go to the files tab.</p>
+    <div class="guide-image">
+        <img src="/static/images/upload.png">
+    </div>
+    <p>Click the download button and a zip file will begin to download on your computer.</p>
+    <div class="guide-image">
+        <img src="/static/images/download_files.png">
+    </div>
+    <p>This file (located in your downloads folder) contains all of your bots files. We are now ready to <a href="/admin/chatbot/aiml_config/add/">create our setup!</a></p>
+
+</div>
+{% endblock content %}

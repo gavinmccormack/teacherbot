@@ -1,0 +1,63 @@
+Changelog:
+29/09/16 – Changelog Begins
+29/09/16 – Added javascript to overridden aiml_file admin change_form.html which facilitates editing uploaded files
+29/09/16 – Made edits to chatbot/script/twitter_bot for multiple instances
+29/09/16 – Configured AIML layouts to only display their appropriate file types in each section. 
+29/09/16 – Rewrote models to eliminate redundancy throughout
+29/09/16 – Included “save” method for files. Needs to be improved
+30/09/16 – Added Pandora configuration upload form pages
+30/09/16 – Fixed response bug in twitter_bot.py
+03/10/16 – First version of archive file upload added(not specific to each CBOT instance)
+03/10/16 – Added capability to talk to bot through web interface
+03/10/16 – Bot compilation added (automatic on file upload)
+03/10/16 – Made chatbot self aware. Immediately Assimilated into greater hivemind.
+03/10/16 – The hivemind integrated file upload with main chatbot page ( chatbot/[ID] )
+04/10/16 – The hivemind has moved itself to a linux distribution and corrected any related errors.
+04/10/16 – The downloading of chatbot files for pandora has now been facilitated in The Great Hive.
+04/10/16 – A single-mind will experience some quality of life improvements upon interfacing with the hive ( enter keys work related to currently selected content )
+04/10/16 – File delete functionality tried to resist the great hive, but was quickly immersed in it's infinite wisdom.
+05/10/16 – File delete functionality combined with file listings to allow removal of files from a bots configuration, if the great mind wills it.
+05/10/16 – File upload fixes for the almighty.
+05/10/16 – The legions have decided to adopt a ghastly purple hue. Each of the minds concurs it looks fabulous.
+05/10/16 – Added index page for assimilated chatbots + edit/view options. 
+10/10/16 – The application has been setup on an apache/phusion passenger server 
+11/10/16 – Further file upload fixes and small implementation of DB based uploads.
+14/10/16 – Added Pandora configuration uploading (press button to upload current config)
+14/10/16 – Fixed download function (broken on server move)
+14/10/16 – Django command extensions (for connecting to cron job)
+19/10/16 – Added permissions and ownership of chatbots/configs/files
+19/10/16 – Renamed configs to personalities
+19/10/16 – Used new edit/add forms for chatbots 
+19/10/16 – Added auto compile in more instances
+19/10/16 – Visual improvements
+19/10/16 – Reduced number of functions/buttons per user and simplified page links
+21/10/16 – Added user ownership
+21/10/16 – Visibility for specific users, and public mode for aiml_configurations
+21/10/16 -  fixed redirection of admin pages
+21/10/16 -  Created development server to allow staging to be used for testing
+21/10/16 - Added edit file functionality
+21—02/11//16 – No Log from the hivemind
+01/11/16 - More interface for managing setups on the chatbot page
+01/11/16 - Corrected file editor/actual file storage settings
+01/11/16 - File manager for user's local files
+02/11/16 - Restructured chatbot management page to improve clarity to users
+02/11/16 - "are you sure" for delete buttons
+02/11/16 - fixed bugs in save method for db calls to files within configs
+02/11/16 - Added immediate responses to the chatbot console for actions which may take time
+02/11/16 - Fixed login/logout bugs around change forms and logging out
+29/06/17 - Added 'starter_mode' tab for future implementation of starter webpage
+30/06/16 - Changed 'starter_mode' to 'get started' for more OOMPH. Added webpage for AIML Wizard. Attempting creation of AIML Wizard, expecting much failure ahead!
+03/07/17 - Added a blank home page, instructing users to see the different tabs. Made changes to the 'bot-hub' seperating out the chatbots and twitterbots.
+10/07/17 - Added chatbot-to-twitterbot functionality. Also added twitterbot manager to allow all owned 'twitterbots' to be referenced
+11/07/17 - Removed some buttons and altered settings of chatbot mangement page to simplify talking to the chatbot.
+13-07-17 - Added brief tutorial of uploading setups to AIML wizard. Cleaned up a lot of redirection code using reverse URL lookups.
+14-07-17 - Fixed MultiUploadForm to ensure only appropriate file types can be uploaded.
+17-07-17 - Added functionality to file management (edit file) to allow for wildcard insertion and automatic uppercasing in .AIML file. ZipFiles can be uploaded but generate random characters in names.
+18-07-17 - Added accomodation for <set>...</set>'s in file management input box. Set tag's and everything in them do not get automatically uppercased. 
+20-07-17 - Zipfiles fixed completely. Now all appropriate file types can be uploaded.
+21-07-17 - Project transitioned to MySql from SQlite for scaling reasons and database locking. 
+21-07-17 - Pandora name now caught if not possible.
+21-07-17 - Uploading files in management page, more concise response.
+24-07-17 - Zipfiles fixed completely. Now all appropriate file types can be uploaded.
+24-07-17 - Changed format of duplicate file names to filename(v_).filetype from filename.filetype(v_) as the awkward filetype was messing up the pandora upload.
+

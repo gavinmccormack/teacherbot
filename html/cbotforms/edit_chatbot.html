@@ -1,0 +1,48 @@
+{% extends 'admin/base_site.html' %}
+
+{% block title %}Add Chatbot{% endblock %}
+
+{% block content %}
+<script src="/static/js/jquery.select.min.js"></script>
+<link rel="stylesheet" href="/static/css/jquery.select.min.css">
+
+
+<h3>Chatbot Settings</h3>
+<form method="post" action="">
+
+  {% csrf_token %}
+
+{% for field in form %}
+<div class="fieldWrapper chatbot-form-wrap">
+    {{ form.subject.errors }}
+    <label class="col-md-4" for="{{ form.subject.id_for_label }}">{{ field.label }}</label>
+    <div class="col-md-8">
+      {{ field }}
+
+      <div class="help-tip">
+          <p>{{ field.help_text }}</p>
+      </div>
+    </div>
+
+    
+    
+</div>
+{% endfor %}
+
+<br/>
+
+
+<div class="submit-row">
+<p class="deletelink-box pull-left cb-form-delete"><a href="/admin/chatbot/cbot/{{ chatbot_id }}/delete/" class="deletelink">Delete</a></p>
+<button class="btn btn-primary pull-right cb-form-btn" type="submit" name="submit">Save Chatbot Settings</button>
+</div>
+</form>
+
+
+
+<script>
+// Add jquery improvements to select box
+$('select').select();
+
+</script>
+{% endblock %}

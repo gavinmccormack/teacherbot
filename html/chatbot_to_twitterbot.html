@@ -1,0 +1,102 @@
+{% extends "admin/base_site.html" %}
+
+
+
+{% block title %} 
+Chatbot to Twitterbot | {{ site_title|default:_('Chatbot Administration') }}
+{% endblock %}
+{% block content %}
+
+    <script> 
+
+    (function($){
+
+        equalheight = function(container){
+
+        var currentTallest = 0,
+             currentRowStart = 0,
+             rowDivs = new Array(),
+             $el,
+             topPosition = 0;
+         $(container).each(function() {
+
+           $el = $(this);
+           $($el).height('auto')
+           topPostion = $el.position().top;
+
+           if (currentRowStart != topPostion) {
+             for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+               rowDivs[currentDiv].height(currentTallest);
+             }
+             rowDivs.length = 0; // empty the array
+             currentRowStart = topPostion;
+             currentTallest = $el.height();
+             rowDivs.push($el);
+           } else {
+             rowDivs.push($el);
+             currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+          }
+           for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+             rowDivs[currentDiv].height(currentTallest);
+           }
+         });
+        }
+
+        // Making boxes in the same row the same height.
+        $(window).load(function() {
+          equalheight('.item-wrap');
+        });
+        $(window).resize(function(){
+          equalheight('.item-wrap');
+        });
+
+        $(window).load(function() {
+          equalheight('.item-wrap-2');
+        });
+        $(window).resize(function(){
+          equalheight('.item-wrap-2');
+        });
+
+    })(jQuery);
+
+</script>
+
+    <section class="container-fluid">
+        <p>Select the chatbot you wish to convert into a twitterbot.</p>
+    </section>
+
+    <section class="chatbot-setup-index">
+    <div class="col-lg-12 index-wrapper">
+    <div class="border-segment">
+        <h3 class="index-heading">Chatbots</h3>
+            <div class="border-segment-wrap">
+        {% if chatbots %}
+            <ul class="twitbot-index container-fluid  index-listing">
+                {% for chatbot in chatbots %} 
+                <div class="col-sm-6 col-lg-3">
+                <div class="twitbot-item-wrap item-wrap" onclick="location.href='/chatbot/{{ chatbot.id }}/add_twitterbot/';" style="cursor: pointer;">
+                    <h4>
+                        {{ chatbot.title }}
+                    </h4>  
+                                                            
+                </div>
+                </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="bg-success not-found">
+                <strong>You don't currently have any Chatbots configured! Go to the <a class="text-warning" href="/chatbot/get-started/">get started</a> section, or go back to the hub and create a chatbot.</strong>
+            </div>
+        {% endif %}
+
+
+        </div>
+        </div>
+    </div>
+
+
+    
+    </section>
+
+ 
+{% endblock content %}

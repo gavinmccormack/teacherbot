@@ -1,0 +1,18 @@
+XiaLin89
+
+Traceback (most recent call last):
+  File "/home/teacherdev/public_html/tb_development/chatbot/script/twitter_bot.py", line 226, in <module>
+    Main()
+  File "/home/teacherdev/public_html/tb_development/chatbot/script/twitter_bot.py", line 222, in Main
+    run()
+  File "/home/teacherdev/public_html/tb_development/chatbot/script/twitter_bot.py", line 219, in run
+    last_tweet_id = main(last_tweet_id)
+  File "/home/teacherdev/public_html/tb_development/chatbot/script/twitter_bot.py", line 183, in main
+    mentions = fetch_mentions(last_tweet_id)
+  File "/home/teacherdev/public_html/tb_development/chatbot/script/twitter_bot.py", line 78, in fetch_mentions
+    results = twitter_api.search(q=query, count=30, since_id=last_tweet_id) ## Count changed to something small temporarily so that we don't accidentally spam 50 random people.
+  File "/home/teacherdev/virtualenv/public__html_tb__development/2.7/lib/python2.7/site-packages/tweepy/binder.py", line 245, in _call
+    return method.execute()
+  File "/home/teacherdev/virtualenv/public__html_tb__development/2.7/lib/python2.7/site-packages/tweepy/binder.py", line 229, in execute
+    raise TweepError(error_msg, resp, api_code=api_error_code)
+TweepError: [{u'message': u'Missing or invalid url parameter.', u'code': 195}]

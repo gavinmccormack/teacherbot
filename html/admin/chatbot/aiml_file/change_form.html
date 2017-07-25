@@ -1,0 +1,146 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_static admin_modify %}
+
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+{% include "navbar.html" %}
+{% endblock %}
+{% endif %}
+
+{% block content %}<div id="content-main">
+
+
+
+<!-- Teacherbot trainer tools -->
+
+
+<script type="text/javascript" src="/static/js/teacherbot_fileeditor.js"></script>
+
+<ul class="tab">
+            <li class="navbar-brand">Chatbot Response Templates: </li>
+            <li><a href="javascript:void(0)" id="tab-console" class="tablinks" onclick="openTab(event, 'simple-response-area')"><i class="fa fa-comment" aria-hidden="true"></i> Simple Reply</a></li>
+            <li><a href="javascript:void(0)" id="tab-console" class="tablinks" onclick="openTab(event, 'advanced-response-area')"><i class="fa fa-comment" aria-hidden="true"></i> Advanced Reply</a></li>
+</ul>
+
+<div id="simple-response-area" class="tabcontent">
+<label>Text to respond to: </label><input id="simple-prompt" name="simple-prompt"> </input>
+<label>Text to reply: </label><input id="simple-response" name="simple-response"> </input>
+<button onclick="simple_response()">Add Response</button>
+</div>
+
+<div id="advanced-response-area" class="tabcontent">
+<label>Text to respond to: </label><input id="advanced-prompt" name="advanced-prompt"> </input>
+<button id="set" onclick="add_to_prompt(this.id)">Add Set</button>
+<button id="wild1" onclick="add_to_prompt(this.id)" title="* Wild">1+ words</button>
+<button id="wild0" onclick="add_to_prompt(this.id)" title="^ Wild">0+ words</button>
+<label>Text to reply: </label><input id="advanced-response" name="advanced-response"> </input>
+<button onclick="advanced_response()">Add Response</button>
+</div>
+
+
+<!-- END Teacherbot trainer tools -->
+
+
+<output id="list"></output>
+
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+  <ul class="object-tools">
+    {% block object-tools-items %}
+    <li>
+        {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+        <a href="{% add_preserved_filters history_url %}" class="historylink">{% trans "History" %}</a>
+    </li>
+    {% if has_absolute_url %}<li><a href="{{ absolute_url }}" class="viewsitelink">{% trans "View on site" %}</a></li>{% endif %}
+    {% endblock %}
+  </ul>
+{% endif %}{% endif %}
+{% endblock %}
+<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
+<div>
+{% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1" />{% endif %}
+{% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}" />{% endif %}
+{% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+{% if errors %}
+    <p class="errornote">
+    {% if errors|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+    </p>
+    {{ adminform.form.non_field_errors }}
+{% endif %}
+
+{% block field_sets %}
+{% for fieldset in adminform %}
+  {% include "admin/includes/fieldset.html" %}
+{% endfor %}
+{% endblock %}
+
+{% block after_field_sets %}{% endblock %}
+
+{% block inline_field_sets %}
+{% for inline_admin_formset in inline_admin_formsets %}
+    {% include inline_admin_formset.opts.template %}
+{% endfor %}
+{% endblock %}
+
+{% block after_related_objects %}{% endblock %}
+
+{% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
+
+{% block admin_change_form_document_ready %}
+    <script type="text/javascript">
+        (function($) {
+            $(document).ready(function() {
+                $('.add-another').click(function(e) {
+                    e.preventDefault();
+                    showAddAnotherPopup(this);
+                });
+                $('.related-lookup').click(function(e) {
+                    e.preventDefault();
+                    showRelatedObjectLookupPopup(this);
+                });
+            {% if adminform and add %}
+                $('form#{{ opts.model_name }}_form :input:visible:enabled:first').focus()
+            {% endif %}
+            });
+
+
+
+             
+
+        })(django.jQuery);
+
+
+// Launch the custom editor
+$(document).ready(function() {
+                  $("#id_text_file").markItUp(mySettings);
+               });
+
+    </script>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{# JavaScript for prepopulated fields #}
+{% prepopulated_fields_js %}
+
+</div>
+</form></div>
+{% endblock %}

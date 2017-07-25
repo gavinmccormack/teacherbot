@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+
+
+
+    {% block content %}
+    <h4 class="bg-primary"> Pandorabots Configuration </h4>
+    <h5> Ehm... </h5>
+    <h5> {{ file.upload_archive }}  </h5>
+    <form action="" method="post" enctype="multipart/form-data">
+	    {% csrf_token %}
+	    <input type="file" name="archivefile" id="archivefile" title="Upload From PC" value= "Upload from archive (ZIP, TAR, RAR)">
+	    <input type="submit" value="Submit" />
+	</form>
+	{% endblock content %}
+
+<!-- Not in use -->

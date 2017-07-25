@@ -1,0 +1,177 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<h3 class="index-heading"> Setting up your first chatbot </h3>
+
+<!--<h4> Developer note: Due to recent changes the screenshots or specific information may be slightly incorrect - this will be remedied soon, sorry!</h4>-->
+</br>
+<div class="guide-textarea">
+	<p>At the moment this website acts as an interface between Pandorabots (a light Artificial Intelligence Service) and Twitter (Social Media). This application allows you to connect a Twitter account to a Pandorabots Chatbot Setup, and manage the files which the chatbot uses to understand questions and queries.</p>
+
+	<p>You will be able to store various AIML "Setups", and deploy Twitter chatbots which operate from these.</p>
+
+	<p>First, let's deal with the Twitter side. You will need to log in to your chatbot Twitter account and retrieve a few details which allow us to operate your Twitter account remotely. For information on how to register a Twitter account and retrieve the appropriate keys, there is a separate <a href="../twitter-guide">Twitter Setup Guide</a> you can visit first.</p>
+
+
+	<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-027.jpg"></img>
+		<figcaption class="figure-caption">The Home Page</figcaption>
+	</figure>
+
+	<p>If you have your four Twitter details - Access Token, Access Token Secret, Consumer Key, and Consumer Secret - then you can move on to creating your first chatbot. On the home page click on "Add a new chatbot" and you should find the following:</p>
+</div>
+
+<figure class="guide-image figure">
+<img src="/static/images/tb-new-example-021.jpg"></img>
+<figcaption class="figure-caption">The "Add a new chatbot" Page</figcaption>
+</figure>
+
+<div class="guide-textarea">
+	<p>Let's go through the fields available above</p>
+
+	<p><strong>Title</strong> - This is the name of the chatbot you've saved, however it is merely for navigation purposes and doesn't reflect either the Twitter name or the Pandora name below. If running multiple chatbots, it would be best to name it something distinctive.</p>
+
+	<p><strong>Pandora Name</strong> - This is the name of the Pandora bot you are connecting to. This should be unique, and if changed it will completely swap out your chatbot AIML setup. </p>
+
+	<p><strong>Active Chatbot Setups</strong> - A "Setup" here is a collection of AIML files which define your chatbot. If this is your first time setting up a chatbot then just add the "Starter Setup" here for now.</p>
+
+	<p><strong>Hashtags and Keywords</strong> - Hashtags and keywords are used as an alternative to direct contact to your bot. For example, if you add the hashtag #UoEDistanceLearning to this list, and it is used on Twitter, your chatbot will automatically reply. If you provide a too common hashtag here your chatbot will reply to too many users, and it's highly likely that it will be barred from sending messages until a support request is filed via <a href="apps.Twitter.com">apps.Twitter.com</a></p>
+
+</div>
+
+<div class="guide-textarea">
+	<ul>
+	<li><p><strong>Access Token</strong> - As covered in the Twitter Setup Guide</p></li>
+	<li><p><strong>Access Token Secret</strong> - As covered in the Twitter Setup Guide</p></li>
+	<li><p><strong>Access Token Consumer Key</strong> - As covered in the Twitter Setup Guide</p></li>
+	<li><p><strong>Access Token Consumer Secret</strong> - As covered in the Twitter Setup Guide</p></li>
+	</ul>
+
+
+	<p>Be careful of blank spaces at the end of the keys.</p>
+
+	<p>If you've filled all of this in, simply click on <strong>Create Chatbot</strong>. If you wish to test your chatbot on Twitter, you can send it a quick @username message to ensure it is working. If this is the first time you will likely get a message to the effect of "Bot has not been compiled", but don't worry this is normal.</p>
+</div>
+
+
+
+
+<h3 class="index-heading">Writing and Testing your Chatbot</h3></p>
+
+<div class="guide-textarea">
+	<p>To configure your chatbot you will first need to understand how to write some AIML. The best way to get quickly comfortable is to experiment with the <a href="https://playground.pandorabots.com/en/">Pandorabots Playground</a> editor - from here you can add simple queries, build a chatbot, and export it for upload here if you wish. A few resources for learning AIML are listed  <a href="../what_is_pandora">here</a>.</p>
+
+	<p>At this point, if you are comfortable with your AIML and wish to try it on Twitter, you should visit your chatbot's Control Panel. You get there from the home page - where you added your new chatbot earlier - by clicking onto the eye shaped icon. </p>
+
+
+	<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-028.jpg"></img>
+		<figcaption class="figure-caption">Chatbot Administration Panel</figcaption>
+	</figure>
+</div>
+
+<div class="container">
+	<div class="col-lg-4">
+		<div class="guide-block">
+		<strong class="btn btn-primary" style="cursor:auto; display:inline-block; margin:0 auto;">Talk</strong>
+		<p><br />  You can type a message here and test whether the chatbot works/is matching your queries appropriately. </p>
+		</div>
+	</div>
+
+	<div class="col-lg-4">
+		<div class="guide-block">
+		<strong class="btn btn-primary" style="cursor:auto; display:inline-block; margin:0 auto; ">Compile your chatbot</strong>
+		<p><br />You'll need to do this once upon first creating your chatbot, and if there are issues adding files or receiving a response.</p>
+		</div>
+	</div>
+
+	<div class="col-lg-4">
+		<div class="guide-block">
+		<strong class="btn btn-primary" style="cursor:auto; display:inline-block; margin:0 auto;">Validate your Twitter Settings</strong>
+		<p><br />  In the console, under the "Settings" tab, you can check if the four Twitter details you have provided are correct.  </p>
+		</div>
+	</div>
+</div>
+<br />
+
+<div class="guide-textarea">
+<p>The console on the right side of the Control Panel will display a log of responses for any actions you take on the page, such as attaching setups and talking to your chatbot. It will also let you know if there are any issues with this.</p>
+
+<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-029.jpg"></img>
+		<figcaption class="figure-caption">Chatbot Log</figcaption>
+	</figure>
+</div>
+
+<div class="sub-index">
+<h4  class="index-heading">Settings</h4>
+</div>
+
+<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-030.jpg"></img>
+		<figcaption class="figure-caption">The Settings tab</figcaption>
+	</figure>
+
+<div class="guide-textarea">
+	<p>This is the "Settings" panel. It shows the information you entered in the first creation of your chatbot. You can check your Twitter details are correct here, and you will receive a notification if there are missed characters or additional blank spaces.</p>
+</div>
+
+
+
+<h3 class="index-heading">Assigning a Setup to your chatbot</h3></p>
+
+<div class="guide-textarea">
+<p>If you've assigned the starter personality to your chatbot, you will have some light capability to respond to queries and answer simple common questions.</p>
+
+<p>Presumably you'd like to write your own! You can upload your own chatbot knowledge from the homepage using the "Add a new Setup" button. On the new page that is coming up, you can browse for files on your computer and select one or multiple files to upload. You should also give your Setup a title so you can identify it when you're using multiple different Setups. Once you're done click "Save".</p>
+    <!--Here you can also choose if you'd like to make your files available to other groups working on a similar chatbot. Sharing your setups with others and re-using their scripts will help you save time and learn from others too. To do this, check the box "Should be public?" when adding your new Setup file. -->
+<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-031.jpg"></img>
+		<figcaption class="figure-caption">The Add a New Setup Page</figcaption>
+	</figure>
+
+<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-035.jpg"></img>
+		<figcaption class="figure-caption">Uploading a Setup</figcaption>
+	</figure>
+
+
+<p>If you'd like to upload more files to your Setup you can simply repeat the process. If you would like to remove files from the Setup or add files to it that you have already uploaded, that's fairly easy too. In order to do this, click on the relevant Setup on the home page. In the drop down box titled "Current Setup Files", the files that are currently part of your Setup are highlighted blue. You can click on a highlighted file to remove it, or click on a non highlighted file to add it to your Setup.</p>
+
+<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-036.jpg"></img>
+		<figcaption class="figure-caption">Adding/removing files in a Setup</figcaption>
+	</figure>
+
+</div>
+
+<div class="sub-index">
+<h4  class="index-heading">Chatbot Setup & Active Files</h4>
+</div>
+
+<div class="guide-textarea">
+	<p>For each chatbot you will have two sets of files; The "Active Files" are files which are loaded onto the current chatbot, and will control the responses it gives. The "Setups" are collections of files which are stored here for later use; Setups can be combined - so if for example you want to use a base personality, but include your own responses to certain queries on top of that you can do this here.</p>
+	<p>Setups need to be assigned to your chatbot before they can go live on Twitter. In order to do this, go to the "Twitter Chatbots" panel on the home page. Then click on "Go to chatbot's control panel" by clicking onto the eye shaped icon.</p>
+ 
+<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-032.jpg"></img>
+		<figcaption class="figure-caption">Attaching a Setup</figcaption>
+	</figure>
+<p>On the page that is coming up, you will see a box titled "Attached Setups". If you'd like to change which of the setups from your inventory should go live on Twitter, click on "Change". In the pop up box that appears, you can add a setup to your chatbot by clicking the "+" symbol and remove a setup by clicking the "-" symbol. You can also see how many files are currently in each setup. </p>      
+
+	<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-033.jpg"></img>
+		<figcaption class="figure-caption">Adding or removing Setups</figcaption>
+	</figure>
+<p>You can then do a batch upload of the active setups by loading them onto the live version of your chatbot. In the bottom left box of your Chatbot Control Panel click on "Load these files to your chatbot" and your chatbot should be updated on Twitter.</p>
+    	<figure class="guide-image figure">
+		<img src="/static/images/tb-new-example-034.jpg"></img>
+		<figcaption class="figure-caption">Selecting Active Setups</figcaption>
+	</figure>
+    
+<p>Please note, that whenever you load these files to your chatbot, any previously active AIML files will be replaced with whatever files are currently in your Setups. So make sure to always select all Setups you need.</p>
+
+</div>
+
+{% endblock %}

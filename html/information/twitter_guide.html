@@ -1,0 +1,47 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+<h3>How to set up Twitter</h3>
+
+<p>The first thing to do is <a href="https://twitter.com/signup">create a Twitter user account</a> for your bot.</p>
+
+<div class="guide-image">
+<img src="/static/images/tb-example-001.jpg"></img>
+</div>
+<p>You will have to provide a name, email address, and a phone number; as well as do a few other things to get your account set up. Before creating your Twitter application, return to your email account, where there should be a new message from Twitter asking you to confirm your email address. Do this, and you&rsquo;re all set to build your Twitter application!</p>
+<p>Go to the Twitter applications site (<a href="https://apps.twitter.com/">https://apps.twitter.com/</a>). You should still be logged in, but if for some reason you are not, log in with the same user credentials you created for your Twitter account.</p>
+
+<div class="guide-image">
+<img src="/static/images/tb-example-002.jpg"></img>
+</div>
+
+<p>Click the button labeled <strong>Create New App</strong>. You will be asked to provide a name, description, and website for your app. If you don&rsquo;t have a website for your Teacherbot, you can use a placeholder url (e.g. http://www.placeholder.com) until you get one. Scroll down to the bottom of the page, read the <strong>Twitter Developer Agreement</strong>, accept it, and then click the <strong>Create your Twitter application</strong> button.</p>
+
+<div class="guide-image">
+<img src="/static/images/tb-example-004.jpg"></img>
+</div>
+
+<p>Next you will need to check if your application&rsquo;s access level is set to <strong>Read and Write</strong>. Under the heading <strong>Application Settings</strong>, you will see your application&rsquo;s access level. Click the blue link beside it labeled <strong>modify app permissions</strong>. On the next page, if not already set, change your applications access from <strong>Read only</strong> to <strong>Read and Write</strong> and click the <strong>Update Settings</strong> button. It may take a few moments for this change to be reflected on the Twitter site, so don&rsquo;t fear if the <strong>Read only</strong> option is still selected initially.</p>
+
+
+<p>Once this has been completed, the next thing to do is generate your access keys. Go to your <strong>Twitter App</strong> page and select the app you just created. Click the <strong>Keys and Access Tokens</strong> tab underneath your application&rsquo;s name. Take note of the <strong>Consumer key</strong> and the <strong>Consumer secret </strong>displayed on this page and store this information somewhere safe, as you will need it later.</p>
+
+<div class="guide-image">
+<img src="/static/images/tb-example-006.jpg"></img>
+</div>
+
+<p>At the bottom of the page under <strong>Your Access Token</strong> click the button labeled <strong>Create my access token</strong>. This will generate your application&rsquo;s <strong>Access token</strong> and its <strong>Access token secret</strong>, which allow your application to make Twitter API calls. If they are not displayed immediately, refresh your browser until they appear. Write them down and store them in a safe place for later.</p>
+
+<div class="guide-image">
+<img src="/static/images/tb-example-005.jpg"></img>
+</div>
+
+<p> That should be everything you need to head over to the <a href="/chatbot/add">Chatbot Creation Page</a></p>
+
+<small>In the event that your chatbot has submitted an excessive number of messages in a short period of time you may see a <br /> <span style="color:white; background-color: #f00;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px; display: inline;padding: 1px 2px;">"Restricted from Performing Write Actions"</span> warning next to your application. This can happen if you have picked a very common hashtag; as your chatbot will then trigger anti-spam measures on Twitter's services. You will need to click the warning and follow the instructions to submit a short form explaining the error before your chatbot will function again</small>
+
+
+{% endblock content %}
+</div>

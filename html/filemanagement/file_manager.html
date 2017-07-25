@@ -1,0 +1,149 @@
+{% extends "admin/base_site.html" %}
+
+	<head>
+        <title>File Manager | University of Edinburgh</title>
+    </head>
+
+
+{% block content %}
+
+<script>
+
+// Tab System 
+
+function openTab(evt, cityName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the link that opened the tab
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+// End Tab System
+
+
+function log_format(text) {
+			time =  new Date().toJSON().slice(11,19)
+			return ("<br /><span class='console-time'>" + time + "</span>: " + text)
+		}
+
+function delete_file(file_id , filename) {
+			$.get('/chatbot/'+file_id+'/file-delete/', function (data) {
+			$( '.file-log' ).append(log_format(data));
+			});
+		 }
+function delete_all_files() {
+			if (confirm('Are you sure you want to delete all files saved on the site?')) {
+			    $.post('/chatbot/file-manager/file-delete-all/', {  csrfmiddlewaretoken: "{{ csrf_token }}"}, function (data) {
+					$( ".file-log" ).append(log_format(data));
+					$('tr').slideUp();
+					});
+			} else {
+			    // Do nothing - user has clicked no
+			}
+}
+
+function by_extension() {
+				// Sorting function for the file list 
+			 	function sortMe(a, b) {
+				        return a.className < b.className ? -1 : 1;;
+				  }
+
+				 $(function(){
+				   var elem = $('#file-index table').find('tr.item-wrap').sort(sortMe);
+				   $('#file-index table').append(elem);
+				 });
+
+			};
+by_extension();
+
+
+$(document).ready(function() {
+
+			$('body').on('click', '.list-delete-button', function(e) {
+				// UI - removed file entry on click. Actual delete done above.
+					 	$( this ).closest('.file-block').slideUp();
+					 });
+
+			by_extension();
+
+document.getElementById("tab-setuplist").click();
+			 
+});		 
+
+</script>
+
+<h3 class="index-heading">File Manager</h3>
+<p>You are viewing <strong>{{ request.user }}</strong>'s files, these may be attached to chatbot setups. Deleting files here will have no immediate effect on active chatbots</p>
+
+<button class="btn btn-primary" onclick="delete_all_files()">Delete all files</button>
+<div class="file-log"></div>
+
+<ul class="tab fileindex-tab">
+          <li><a href="javascript:void(0)" id="tab-setuplist" class="tablinks" onclick="openTab(event, 'setup-list')">Files in Setups</a></li>
+          <li><a href="javascript:void(0)" id="tab-filelist" class="tablinks" onclick="openTab(event, 'file-list')">All Files</a></li>
+</ul>
+
+<div id="setup-list" class="tabcontent">
+
+
+					{% if setup_files %}
+			        <ul id="file-index" class="aimlfile-index container-fluid index-listing">
+			                {% for setup in setup_files %} 
+			                		<h6 class="small-heading"> {{ setup.title }} </h6>
+			                		{% for file in setup.get_files %}
+			                    	<div id="file-{{ file.id }}" class="file-block">
+			                    	<p class="list-title">{{ file.get_simplename }}</p>
+					                    <button class="btn btn-primary list-delete-button" onclick="delete_file({{ file.id }})">Delete </button>
+					                    <a href="/admin/chatbot/aiml_file/{{ file.id }}/" class="btn btn-primary">Edit</a>
+			                    	</div>
+			                	{% endfor %}
+			                {% endfor %}
+			                </ul>
+			        {% else %}
+			            <div class="bg-success not-found">
+			                <small>No setup configurations are attached to this chatbot. Add some via the chatbot settings or create a new one <a href="">here</a></small>
+			            </div>
+			        {% endif %}
+
+
+</div>
+
+<div id="file-list" class="tabcontent">
+		{% if aimls %}
+            <ul id="file-index" class="aimlfile-index container-fluid index-listing">
+                {% for aiml in aimls  %} 
+			        <div id="file-{{ aiml.id }}" class="file-block">
+			            <p class="list-title">{{ aiml.get_simplename }}</p>
+					    <button class="btn btn-primary list-delete-button" onclick="delete_file({{ aiml.id }})">Delete </button>
+					    <a href="/admin/chatbot/aiml_file/{{ aiml.id }}/" class="btn btn-primary">Edit</a>
+			        </div>
+
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="bg-success not-found">
+                <strong>No Files found</strong>
+            </div>
+        {% endif %}
+</div>
+
+
+
+
+
+
+{% endblock %}

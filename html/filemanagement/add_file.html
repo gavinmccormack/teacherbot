@@ -1,0 +1,50 @@
+{% extends 'admin/base_site.html' %}
+
+
+
+{% block title %}Add File{% endblock %}
+
+{% block content %}
+
+<form method="post" action="/chatbot/add-file/">
+
+  {% csrf_token %}
+
+{% if form.errors %}
+    <div class="form-warning bg-info">
+    <strong class="text-warning"><i class="fa fa-exclamation-triangle form-warning" aria-hidden="true"></i> There was an error with the following field(s): </strong>
+    {% for field in form %}
+        {% for error in field.errors %}
+                <br />
+                {{ field.label }}
+                : {{ error}}
+        {% endfor %}
+    {% endfor %}
+    </div>
+{% endif %}
+
+{% for field in form %}
+<div class="fieldWrapper chatbot-form-wrap {{ field.name }} ">
+    {{ form.subject.errors }}
+    <label class="col-md-4" for="{{ form.subject.id_for_label }}">{{ field.label }}</label>
+    <div class="col-md-8">
+      {{ field }}
+
+      <div class="help-tip">
+          <p>{{ field.help_text }}</p>
+      </div>
+    </div>
+
+    
+    
+</div>
+
+{% endfor %}
+
+<br/>
+
+<button class="btn btn-primary" type="submit" name="submit">Add File</button>
+
+</form>
+{% endblock %}
+
