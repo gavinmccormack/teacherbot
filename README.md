@@ -11,9 +11,8 @@ If you are a public body interested in extending the work done here, creating yo
 
 # Credits
 
-Written by Gavin McCormack - https://github.com/TheGrimJam
+Written by Gavin McCormack | https://github.com/TheGrimJam __
 
-With additional work by Sam Knight to improve the application - 
-https://github.com/SamKnightGit
+With additional work by Sam Knight to improve the application | https://github.com/SamKnightGit __
 
-To intern Kate Haag for work on the Twitter API
+To intern Kate Haag for work on the Twitter API __
