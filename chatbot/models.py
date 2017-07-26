@@ -126,9 +126,22 @@ class cbot(models.Model):
         try:
             API.compile_bot(user_key, app_id, host, name)
         except KeyError:
-            # If bot is not yet created, keyerror thrown
+            # If bot is not yet created, keyerror thrown; bot created and compiled
             API.create_bot(user_key, app_id, host, name)
-            
+
+        """ Upload upon saving (possible not needed)
+
+        def get_attached_files(self):
+        attached_files = []
+        for config in self.get_attached_configurations():
+            attached_files += config.get_file_paths()
+        return attached_files
+
+        IN save method:
+        for file in self.get_attached_files():
+            API.upload_file(user_key, app_id, host, name, file)
+        API.compile_bot(user_key, app_id, host, name)
+        """    
         
         
     def get_attached_config_names(self, join=True):

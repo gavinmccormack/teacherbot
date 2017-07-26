@@ -69,11 +69,8 @@ def pandora_debug_bot(pa_botname):
 
 def pandora_list_files_short(pa_botname):
 	filelist = pbAPI.list_files(user_key, app_id, host, pa_botname)
-	output = "<div class='file-list'>"
 	filelist = get_filenames(filelist)
-	for a in filelist:
-			output = (output +" <div class='file-block'><span>" + a + "</span></div>")
-	return output + "</div>"
+	return filelist
 
 def get_filenames(filelist_object):
 	# Takes json file list and sits out list of file names
@@ -82,7 +79,7 @@ def get_filenames(filelist_object):
 	for dict_element in filelist_object:
 		if dict_element in file_types:
 			for i in range(len(filelist_object[dict_element])):
-				filenames.append(filelist_object[dict_element][i]['name'])
+				filenames.append(filelist_object[dict_element][i]['name'] + '\n')
 	return filenames
 
 

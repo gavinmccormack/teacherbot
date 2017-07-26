@@ -149,17 +149,24 @@
 
 		 function load_active_files() {
 
-					$.get('/chatbot/'+{{ chatbot.id }}+'/pa-list-debug/', function (data) {
+					$.get('/chatbot/'+{{ chatbot.id }}+'/pa-list/', function (data) {
 						console.log(data);
-
-						result = "";
-						for (i = 0 ; i < data.length ; i++) {
-							result = result + data[i]['name'];
+						output = "<div class='file-list'>"
+						data = data.split("\n");
+						// slice to remove empty final element of array
+						data = data.slice(0, data.length - 1);
+						for(var i = 0; i < data.length; i++){
+    						output += " <div class='file-block'>" + "<span> " + data[i] + " </span></div>";
 						}
-						console.log(result);
-						$( ".active-files" ).html(result); // Python STR \n's to <br>
+						output += "</div>";
+						console.log(output);
+						console.log(data);
+						$( ".active-files" ).html(output); // Python STR \n's to <br>
 					});
+				
 		}
+
+		
 
 		$(document).ready(function() {
 
