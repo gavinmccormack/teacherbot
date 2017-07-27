@@ -54,6 +54,7 @@ urlpatterns = [
 	url(r'^(?P<cbot_id>[0-9]+)/pa-delete/$', views.delete_pandora_file, name='panda-delete'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-delete-all/$', views.delete_all_pandora_file, name='panda-delete-all'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-upload/$', views.upload_pandora_config, name='panda-upload'),
+	url(r'^(?P<cbot_id>[0-9]+)/pa-sync-status/$', views.file_sync_status, name='sync-status'),
 
 	#Gavin's Debugging PandoraAPI actions
 	url(r'^list-all/$', views.list_pandora_bots, name='panda-list-all'),

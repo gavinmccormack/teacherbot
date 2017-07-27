@@ -68,10 +68,10 @@ def pandora_debug_bot(pa_botname):
 
 def get_filelist(pa_botname):
 	filelist = pbAPI.list_files(user_key, app_id, host, pa_botname)
-	filelist = get_filenames(filelist)
+	filelist = extract_filenames(filelist)
 	return filelist
 
-def get_filenames(filelist_object):
+def extract_filenames(filelist_object):
 	# Takes json file list and sits out list of file names
 	filenames = []
 	file_types = ['files', 'maps', 'properties', 'pdefaults', 'sets', 'substitutions']
@@ -80,6 +80,24 @@ def get_filenames(filelist_object):
 			for i in range(len(filelist_object[dict_element])):
 				filenames.append(filelist_object[dict_element][i]['name'] + '\n')
 	return filenames
+
+def get_filetimes(pa_botname):
+	filetimes_dict = {}
+	filelist = pbAPI.list_files(user_key, app_id, host, pa_botname)
+	filetimes = extract_filetimes(filelist)
+	filelist = extract_filenames(filelist)
+	for x in range(filelist.length):
+		filetimes_dict[filelist[x]] = filetimes[x]
+	return filetimes_dict
+
+def extract_filetimes(filelist_object):
+	filetimes = []
+	file_types = ['files', 'maps', 'properties', 'pdefaults', 'sets', 'substitutions']
+	for dict_element in filelist_object:
+		if dict_element in file_types:
+			for i in range(len(filelist_object[dict_element])):
+				filetimes.append(filelist_object[dict_element][i]['modified'] + '\n')
+	return filetimes
 
 
 ### PandoraBot Talk

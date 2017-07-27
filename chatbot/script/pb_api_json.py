@@ -32,7 +32,6 @@ def list_bots(user_key, app_id, host):
 
 def delete_bot(user_key,app_id,host,botname):
     path = '/bot/' + app_id +'/' + botname
-    url = host + path
     url = host_base + host + path
     query = {"user_key": user_key}
     response = requests.delete(url, params=query)
@@ -93,7 +92,7 @@ def get_file(user_key, app_id, host, botname, filename):
     if response.ok:
         output = response.text
     else:
-        output = "There was an error with you request: " + response.json()["message"]
+        output = "There was an error with your request: " + response.json()["message"]
     return output
 
 def download_bot(user_key, app_id, host, botname, download_location=False):

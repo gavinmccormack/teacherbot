@@ -210,6 +210,14 @@ def compile_pandora_bot(request, cbot_id):
     response = pa.bot_compile(pa_name)
     return HttpResponse(response)
 
+@login_required
+def file_sync_status(request, cbot_id):
+	""" Method to determine if files in setup are synced with uploaded files"""
+
+	return HttpResponse(response)
+
+
+
 
 ################################################################
 ###################### Debugging Views #########################

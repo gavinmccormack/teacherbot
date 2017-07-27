@@ -113,18 +113,7 @@
 			$( ".pandora-logging" ).prepend(log_format(data));
 			});
 		 }
-		 /* Used previously to ensure bot was compiled before talking
-		 function compile_and_talk(bot_id, query) {
-		 	compile_bot(bot_id)
-		 	setTimeout(function(){talkto_bot(bot_id, query)}, 4000)
-		 }
-		*/
-		 function upload_bot(bot_id) {
-		 	$( ".pandora-logging" ).prepend(log_format("Your archive file is uploading; you will be returne to this page on completion."));
-			$.post('/chatbot/'+bot_id+'/pa-archive/', {  csrfmiddlewaretoken: "{{ csrf_token }}"}, function (data) {
-			$( ".pandora-logging" ).prepend(log_format(data));
-			});
-		 }
+		
 
 		 function upload_bot_config(bot_id) {
 		 	$( ".pandora-logging" ).prepend(log_format("Starting upload of files currently in setups: {{ chatbot.get_attached_config_names|join:' , ' }}. <br> This may take some time if you are uploading a large set of files."));
@@ -145,6 +134,10 @@
 			    // Do nothing - user has clicked no
 			}
 			
+		 }
+
+		 function check_sync_status() {
+		 	
 		 }
 
 		 function load_active_files() {
