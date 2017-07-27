@@ -62,5 +62,5 @@ Changelog:
 24-07-17 - Changed format of duplicate file names to filename(v_).filetype from filename.filetype(v_) as the awkward filetype was messing up the pandora upload.
 25-07-17 - Updating of pb_py_api to json_api (name in progress). Added Git to server, server to github. 
 25-07-17 - Fixed bugs with loaded file names caused by new JSON formatting. Moved HTML snippets out of python and into html where it belongs.
-27-07-17 - Testing commit.
+27-07-17 - Testing commit. again.
 
