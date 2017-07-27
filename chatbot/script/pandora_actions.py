@@ -27,7 +27,7 @@ botname = 'Notabot' ### Temp variable for dev
 ###############
 ### List all bots
 ### Deployed from /chatbot/list-all/
-def list_all():
+def get_bot_list():
 	return pbAPI.list_bots(user_key, app_id, host)
 
 ###############
@@ -40,7 +40,7 @@ def create_bot(pa_botname):
 
 ###############
 ### Download Files
-def pandora_download(pa_botname):
+def get_files_link(pa_botname):
 	try:
 		file_path, pth = os.path.split( ENV_PATH )
 		file_path, pth = os.path.split( file_path )   ## A clunky but environment safe way of navigating to the right static dir
@@ -65,9 +65,8 @@ def pandora_debug_bot(pa_botname):
 
 ###########################################################################################################
 ### File listing + Light html parsing 
-### This function is probably pretty poorly conceived, and takes some of the HTML language away from the template due to API handling
 
-def pandora_list_files_short(pa_botname):
+def get_filelist(pa_botname):
 	filelist = pbAPI.list_files(user_key, app_id, host, pa_botname)
 	filelist = get_filenames(filelist)
 	return filelist
@@ -84,23 +83,23 @@ def get_filenames(filelist_object):
 
 
 ### PandoraBot Talk
-def pandora_talkto_bot(pa_botname, input_string):
+def bot_talk(pa_botname, input_string):
 	""" Talks to the bot. API returns a dict with response (along with sessionid and others for debugging purposes) """
 	return API.talk(user_key, app_id, host, pa_botname, input_string)['response']
 
 
-def pandora_compile_bot(pa_botname):
+def bot_compile(pa_botname):
 	""" Compiles bot with files already on pandorabots """
 	return API.compile_bot(user_key, app_id, host, pa_botname)
 
 
 
-def pandora_delete_file(pa_botname, filename):
+def bot_delete_file(pa_botname, filename):
 	delete = API.delete_file(user_key, app_id, host, pa_botname, filename)
 	return delete
 
 
-def pandora_delete_all_files(pa_botname):
+def bot_delete_all_files(pa_botname):
 	try:
 		filelist = API.list_files(user_key, app_id, host, pa_botname).split('\n')
 		for n in filelist:
@@ -121,7 +120,7 @@ def pandora_delete_all_files(pa_botname):
 
 
 ###############
-def pandora_upload_files_from_path(pa_botname, file_list):
+def bot_upload_files(pa_botname, file_list):
 	""" Upload single files from an array of paths """
 	# Counter for successful uploads
 	success_response = 0

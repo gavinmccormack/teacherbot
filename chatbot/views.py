@@ -142,8 +142,9 @@ def upload_pandora_config(request, cbot_id):
 		if not file_list:
 			return HttpResponse("No files were found")
         
-		success_response, errors = pa.pandora_upload_files_from_path(pa_name, file_list)
+		success_response, errors = pa.bot_upload_files(pa_name, file_list)
 		response = check_successful_upload(success_response, errors, len(file_list))
+		pa.bot_compile(pa_name)
 		return HttpResponse(response)
 	except Exception, error:
 		return HttpResponse("Error: " + str(error))
@@ -168,13 +169,13 @@ def create_pandora_bot(request, cbot_id):
 def download_pandora_bot(request, cbot_id):
     """ Downloads a copy of the files on pandora to a directory and outputs a link """
     pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
-    return HttpResponse(pa.pandora_download(pa_name))
+    return HttpResponse(pa.get_files_link(pa_name))
 
 @login_required
 def file_list_pandora_bot(request, cbot_id):
     """ Returns a list of the current files for a specific bot on pandora """
     pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
-    return HttpResponse(pa.pandora_list_files_short(pa_name))
+    return HttpResponse(pa.get_filelist(pa_name))
 
 @login_required
 def talk_pandora_bot(request, cbot_id):
@@ -182,7 +183,7 @@ def talk_pandora_bot(request, cbot_id):
     pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
     context_instance=RequestContext(request)
     if request.method == 'POST':
-        return HttpResponse( pa.pandora_talkto_bot(pa_name, request.POST['askbot']) )
+        return HttpResponse( pa.bot_talk(pa_name, request.POST['askbot']) )
     return HttpResponse("A query was not correctly sent to the chatbot")
 
 @login_required
@@ -190,7 +191,7 @@ def delete_pandora_file(request, cbot_id):
     """ Delete a specific file on the pandora bots system """
     pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
     if request.method == 'POST':
-        response = pa.pandora_delete_file(pa_name, request.POST['filename'])
+        response = pa.bot_delete_file(pa_name, request.POST['filename'])
         return HttpResponse( response ) ### Name of post variable required
     return HttpResponse("We weren't able to retrieve a file instance.")
 
@@ -198,7 +199,7 @@ def delete_pandora_file(request, cbot_id):
 def delete_all_pandora_file(request, cbot_id):
     """ Delete a specific file on the pandora bots system """
     pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
-    response = pa.pandora_delete_all_files(pa_name)
+    response = pa.bot_delete_all_files(pa_name)
     return HttpResponse(response)
 
 
@@ -206,7 +207,7 @@ def delete_all_pandora_file(request, cbot_id):
 def compile_pandora_bot(request, cbot_id):
     """ Additional compilation method """
     pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
-    response = pa.pandora_compile_bot(pa_name)
+    response = pa.bot_compile(pa_name)
     return HttpResponse(response)
 
 
@@ -218,7 +219,7 @@ def compile_pandora_bot(request, cbot_id):
 @login_required
 def list_pandora_bots(request):
     """ Returns a list obj of all the bots on pandora"""
-    response = pa.list_all()
+    response = pa.get_bot_list()
     output = "<br />".join(response)
     return HttpResponse( output )
 
@@ -263,7 +264,7 @@ def chatbot_activate_toggle(request, cbot_id): #toggle_chatbot
             response = "deactivated"
         # And we'll compile here also, just to reduce the onus of responsibility on the user
         pa_name = cbot.twitterbot_manager.get(pk=cbot_id).pandora_name
-        pa.pandora_compile_bot(pa_name)
+        pa.bot_compile(pa_name)
         return HttpResponse("Chatbot has been " + response)
     except Exception, e:
         return HttpResponse("The system was unable to toggle bot activity; please contact a system administrator with these details: " + str(e))
