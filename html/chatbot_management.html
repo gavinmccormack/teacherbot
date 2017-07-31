@@ -136,8 +136,10 @@
 			
 		 }
 
-		 function check_sync_status() {
-		 	
+		 function check_sync_status(bot_id) {
+		 	$.post('/chatbot/'+bot_id+'/pa-sync-status/', { csrfmiddlewaretoken: "{{ csrf_token }}"}, function (data) {
+			$( ".pandora-logging" ).prepend(log_format(data));
+			});
 		 }
 
 		 function load_active_files() {
@@ -199,6 +201,7 @@
 				// Default Tab
 				document.getElementById("tab-console").click();
 				load_active_files();
+				check_sync_status(cbot_id);
 		});
 
 

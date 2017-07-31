@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.messages import constants as messages
 import os.path
+import re
+import time
 
 from chatbot.script import log
 
@@ -135,7 +137,6 @@ def upload_pandora_config(request, cbot_id):
 	try:
 		pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
 		configurations = cbot.bot_manager.get(pk=cbot_id).get_attached_configurations()
-		print(configurations)
 		file_list = []
 		for n in configurations:
 			file_list += n.get_file_paths()
@@ -196,7 +197,7 @@ def delete_pandora_file(request, cbot_id):
     return HttpResponse("We weren't able to retrieve a file instance.")
 
 @login_required
-def delete_all_pandora_file(request, cbot_id):
+def delete_all_pandora_files(request, cbot_id):
     """ Delete a specific file on the pandora bots system """
     pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
     response = pa.bot_delete_all_files(pa_name)
@@ -212,9 +213,71 @@ def compile_pandora_bot(request, cbot_id):
 
 @login_required
 def file_sync_status(request, cbot_id):
-	""" Method to determine if files in setup are synced with uploaded files"""
+    """ Method to determine if files in setup are synced with uploaded files """
+    pa_name = cbot.bot_manager.get(pk=cbot_id).pandora_name
+    pandora_file_times = pa.get_filetimes(pa_name)
+    bot_file_times = get_name_time_dict(cbot_id)
+    response = True
+    log.log_exception(pandora_file_times, "dictionary_log.txt")
+    log.log_exception(bot_file_times, "dictionary_log.txt")
+    for key in pandora_file_times:
+        if key in bot_file_times:
+            if pandora_file_times[key] == bot_file_times[key]:
+                pass
+            else:
+                response = False
+                break
+        else:
+            response = False
+            break
+    return HttpResponse(response)
+	
 
-	return HttpResponse(response)
+def extract_pandora_namelist(file_list):
+    """ Extracts pandora-style names from bot file list """
+    pandora_namelist = []
+    for file in file_list:
+        file = os.path.basename(file)
+        filename, file_extension = os.path.splitext(file)   
+        if (file_extension == '.properties' or file_extension == '.pdefaults'):
+            pandora_namelist.append(file_extension[1:])
+        elif (file_extension == '.map' or file_extension == '.substitution' or file_extension == '.set'):
+            #If version number exists then remove
+            filename = re.sub(r'\(v[0-9]+\)', '', filename)
+            pandora_namelist.append(filename)
+        else: #.aiml files
+            filename = re.sub(r'\(v[0-9]+\)', '', filename)
+            filename = re.sub(r'^pand_', '', filename)
+            pandora_namelist.append(filename + file_extension)
+    for name in pandora_namelist: #To match with names on pandorabots
+        name += '\n'
+    return pandora_namelist
+
+
+def extract_pandora_timelist(file_list):
+    """ Extracts pandora-style file last modified times from bot file list """
+    pandora_timelist = []
+    for file in file_list:
+        time_seconds = os.path.getmtime(file)
+        time_struct = time.gmtime(time_seconds)
+        time_formatted = time.strftime("%Y-%m-%dT%H:%M:%SZ\n", time_struct)
+        pandora_timelist.append(time_formatted)
+    return pandora_timelist
+
+def get_name_time_dict(cbot_id):
+    """ Gets dictionary with keys: pandora file-names, values: pandora file last modified times """
+    name_time_dict = {}
+    file_list, name_list, time_list = [], [], []
+
+    configurations = cbot.bot_manager.get(pk=cbot_id).get_attached_configurations()
+    for n in configurations:
+        file_list += n.get_file_paths()
+    name_list = extract_pandora_namelist(file_list)
+    time_list = extract_pandora_timelist(file_list)
+    for i in range(len(name_list)):
+        name_time_dict[name_list[i]] = time_list[i]
+    return name_time_dict
+
 
 
 

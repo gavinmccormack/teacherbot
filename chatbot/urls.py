@@ -52,7 +52,7 @@ urlpatterns = [
 	url(r'^(?P<cbot_id>[0-9]+)/pa-talk/$', views.talk_pandora_bot, name='pa_talk'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-list/$', views.file_list_pandora_bot, name='pa_list'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-delete/$', views.delete_pandora_file, name='panda-delete'),
-	url(r'^(?P<cbot_id>[0-9]+)/pa-delete-all/$', views.delete_all_pandora_file, name='panda-delete-all'),
+	url(r'^(?P<cbot_id>[0-9]+)/pa-delete-all/$', views.delete_all_pandora_files, name='panda-delete-all'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-upload/$', views.upload_pandora_config, name='panda-upload'),
 	url(r'^(?P<cbot_id>[0-9]+)/pa-sync-status/$', views.file_sync_status, name='sync-status'),
 

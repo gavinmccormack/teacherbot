@@ -86,8 +86,8 @@ def get_filetimes(pa_botname):
 	filelist = pbAPI.list_files(user_key, app_id, host, pa_botname)
 	filetimes = extract_filetimes(filelist)
 	filelist = extract_filenames(filelist)
-	for x in range(filelist.length):
-		filetimes_dict[filelist[x]] = filetimes[x]
+	for i in range(len(filelist)):
+		filetimes_dict[filelist[i]] = filetimes[i]
 	return filetimes_dict
 
 def extract_filetimes(filelist_object):
@@ -144,7 +144,7 @@ def bot_upload_files(pa_botname, file_list):
 	success_response = 0
 	# Keys: File_name, Value: error
 	file_errors = {}
-	pandora_delete_all_files(pa_botname)
+	bot_delete_all_files(pa_botname)
 	for n in file_list:
 		nt, name = os.path.split(n)
 		name = re.sub(r'\(v[0-9]+\)', '', name)
