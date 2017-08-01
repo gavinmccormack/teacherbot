@@ -1,6 +1,6 @@
-Time: 2017-07-31 13:50:19.974937  
+Time: 2017-08-01 13:41:11.147278  
 Current Function: index
-Time Taken:--- 0.098151922226 seconds ---
+Time Taken:--- 0.164052963257 seconds ---
 Output: Content-Type: text/html; charset=utf-8
 
 <!DOCTYPE html>
@@ -188,9 +188,9 @@ Website design by the <a href="http://www.ed.ac.uk/information-services/help-con
 </body>
 </html>
 
-Time: 2017-07-31 13:52:13.458679  
+Time: 2017-08-01 14:04:57.374707  
 Current Function: index
-Time Taken:--- 0.0368070602417 seconds ---
+Time Taken:--- 0.0263750553131 seconds ---
 Output: Content-Type: text/html; charset=utf-8
 
 <!DOCTYPE html>
@@ -378,9 +378,9 @@ Website design by the <a href="http://www.ed.ac.uk/information-services/help-con
 </body>
 </html>
 
-Time: 2017-07-31 13:52:18.432338  
+Time: 2017-08-01 14:05:02.827134  
 Current Function: index
-Time Taken:--- 0.0342621803284 seconds ---
+Time Taken:--- 0.0754268169403 seconds ---
 Output: Content-Type: text/html; charset=utf-8
 
 <!DOCTYPE html>
@@ -568,199 +568,9 @@ Website design by the <a href="http://www.ed.ac.uk/information-services/help-con
 </body>
 </html>
 
-Time: 2017-07-31 13:52:22.516358  
+Time: 2017-08-01 14:05:07.446521  
 Current Function: index
-Time Taken:--- 0.0271699428558 seconds ---
-Output: Content-Type: text/html; charset=utf-8
-
-<!DOCTYPE html>
-
-<html lang="en-us" >
-<head>
-<title>
-Teacherbot Homepage| Chatbot Administration
-</title>
-<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
-
-<head>
-
-  <!-- Bootstrap CSS/JS -->
-    
-     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-     <!-- Font awesome -->
-    <link rel="stylesheet" href="https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css" integrity="sha384-Wrgq82RsEean5tP3NK3zWAemiNEXofJsTwTyHmNb/iL3dP/sZJ4+7sOld1uqYJtE" crossorigin="anonymous">
-
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/static/js/markitup/jquery.markitup.js"></script>
-<script type="text/javascript" src="/static/js/markitup/set.js"></script>
-
-       
-<link rel="stylesheet" type="text/css" href="/static/css/markitup/style-default.css" />
-<link rel="stylesheet" type="text/css" href="/static/css/markitup/style.css" />
-
-  <!-- Google fonts link -->
-<link href="https://fonts.googleapis.com/css?family=Baloo+Thambi" rel="stylesheet">
-
-   <!-- Second Attempt at editor -->
-
-   
-
-
-    <!-- markup editor -->
-    
-    <link rel="stylesheet" type="text/css" href="/static/css/teacherbot-custom.css" />
-   
-   
-  
- 
-
-    
-
-   
-
-
-
-</head>
-
-
-
-<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/static/admin/css/ie.css" /><![endif]-->
-
-<script type="text/javascript">window.__admin_media_prefix__ = "/static/admin/";</script>
-<script type="text/javascript">window.__admin_utc_offset__ = "0";</script>
-
-<meta name="robots" content="NONE,NOARCHIVE" />
-</head>
-
-
-<body class="">
-
-<!-- Container -->
-<div id="container">
-
-    
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-        
-
-
-
-	<a href="/"><img id="site-logo" src="/static/images/logo.png" /></a>
-
-
-
-        </div>
-        
-        
-        
-        
-    </div>
-    <!-- END Header -->
-    
-
-<nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" title="Home" href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i><span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                
-                <li><a href="/admin/password_change/">Change Password</a></li>
-                <li><a href="/admin/logout?next=/">Logout</a></li>
-                </ul>
-              </li>
-              <li><a href = "/chatbot/get-started">Get Started</a></li>
-              <li><a href = "/chatbot/bot-hub">Bot Hub</a></li>
-              <li><a href = "https://playground.pandorabots.com/en/bot/" target="_blank">Pandorabot's Playground</a></li>
-              <li><a href="/chatbot/aiml_wizard">AIML Wizard</a></li>
-              <li><a href="/chatbot/file-manager/">File Manager</a></li>
-              <li class="dropdown">
-               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documentation <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="/chatbot/first-setup-guide/">1. First Teacherbot Setup Guide</a></li>
-                    <li><a href="/chatbot/twitter-guide/">2. Twitter Setup Guide</a></li>
-             
-                    <li role="separator" class="divider"></li>
-                    <li><a href="/chatbot/pandora-guide/">3. Pandorabots & AIML</a></li>
-                    <li><a href="/chatbot/playground-guide/">4. Playground Guide</a></li>
-                    <li><a href="/chatbot/get-started-old/">5. Old Get Started Page</a></li>
-              </ul>
-              </li>
-            
-            
-            
-            </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-
-    
-
-    
-        
-    
-
-    <!-- Content -->
-    <div id="content" class="colM">
-        
-        
-        
-
-<section class="container-fluid">
-    <h3>Welcome to the teacherbot pilot website!</h3>
-    <p>All our bots will be created and updated on Pandorabots so the first thing to do is <a href="https://playground.pandorabots.com/en/" target="_blank">make a pandorabots account.</a></p>
-    <p>Make your way over to the get started tab to learn the ropes!</p>
-    <p> Thank you for opting into our pilot service. Your feedback is much appreciated so don't hesitate to contact us at: <a href="mailto:dev.teacherbot@gmail.com?subject=Teacherbot%20Feedback">dev.teacherbot@gmail.com</a>
-    
-</section>
-
-
-        
-        <br class="clear" />
-    </div>
-    <!-- END Content -->
-
-    
-</div>
-<footer  id="teacherbot-footer">
-<div class="container-fluid">
-<div class="col-sm-3">
-<img src="/static/images/uoelogo.png" />
-</div>
-
-<div class="col-sm-9">
-<p class="footer-text">
-Project funded by the <a href="http://www.ed.ac.uk/development-alumni/iig">University of Edinburgh's Innovation Scheme</a> <br />
-Website design by the <a href="http://www.ed.ac.uk/information-services/help-consultancy/consultancy-services/interactive-content-service">Interactive Content Team</a>, Information Services, The University of Edinburgh.<br />
-<span class="not-so-secret-footer" style="color:#2b2b2b">Developed by Gavin McCormack </span>
-</p>
-
-</div>
-</div>
-</footer>
-
-</div>
-<!-- END Container -->
-
-</body>
-</html>
-
-Time: 2017-07-31 13:52:27.322048  
-Current Function: index
-Time Taken:--- 0.0288319587708 seconds ---
+Time Taken:--- 0.0593330860138 seconds ---
 Output: Content-Type: text/html; charset=utf-8
 
 <!DOCTYPE html>

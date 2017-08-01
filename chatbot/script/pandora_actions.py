@@ -149,7 +149,7 @@ def bot_upload_files(pa_botname, file_list):
 		nt, name = os.path.split(n)
 		name = re.sub(r'\(v[0-9]+\)', '', name)
 		try:
-			API.upload_file(user_key, app_id, host, pa_botname, n)
+			pbAPI.upload_file(user_key, app_id, host, pa_botname, n)
 			success_response += 1
 		except Exception, error:
 			file_errors[name] = error

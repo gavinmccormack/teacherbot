@@ -1,10 +1,22 @@
 <aiml version="2.0">
 
-<category><pattern>HELLO</pattern><template>Hi dude!</template></category>
+<category><pattern>WHAT IS YOUR NAME</pattern><template>Hero-bot</template></category>
 
 
         
-<category><pattern>HI</pattern><template>Hey man.</template></category>
+<category><pattern>WHAT COLOUR IS GRASS</pattern><template>green</template></category>
+
+
+        
+<category><pattern>WHAT COLOUR IS GRASS</pattern><template>Green</template></category>
+
+
+        
+<category><pattern>HOW TALL ARE THE PYRAMIDS</pattern><template>2000000m</template></category>
+
+
+        
+<category><pattern>WHAT COLOUR IS SAND</pattern><template>Yellow/Brown</template></category>
 
 
 </aiml>

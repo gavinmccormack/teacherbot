@@ -1,4 +1,6 @@
 import requests
+import os
+import log
 
 host_base = "https://"
 

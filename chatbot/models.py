@@ -14,6 +14,8 @@ from script import file_storage
 from script import pa_py_api as API
 from django.core.validators import RegexValidator
 from .validators import validate_pandora_length
+from jsonfield import JSONField
+
 
 
 mfs = file_storage.MyFileStorage()
@@ -96,6 +98,7 @@ class cbot(models.Model):
         RegexValidator(regex='^[a-z0-9]+$', message="Only (lowercase) characters a-z and 0-9 are allowed", code="Pandora name can only consist of characters a-z and 0-9.")
         ])
     aiml_config = models.ManyToManyField(aiml_config,related_name='mlconfig',blank=True  ,verbose_name="Active Chatbot Setups") 
+    uploaded_files = JSONField(default=dict)
     enabled = models.BooleanField('Is enabled?', default=False)
     active_process = False
     author = models.ForeignKey(User, default=1, related_name='chatbots', blank=True)
@@ -118,7 +121,6 @@ class cbot(models.Model):
         return self.aiml_config.all()
 
     def save(self, *args, **kwargs):
-        super(cbot, self).save(*args, **kwargs)
         app_id = pandora_settings.objects.get().app_id
         user_key = pandora_settings.objects.get().user_key
         host = pandora_settings.objects.get().host
@@ -128,6 +130,7 @@ class cbot(models.Model):
         except KeyError:
             # If bot is not yet created, keyerror thrown; bot created and compiled
             API.create_bot(user_key, app_id, host, name)
+        super(cbot, self).save(*args, **kwargs)
 
         """ Upload upon saving (possible not needed)
 

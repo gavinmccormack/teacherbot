@@ -1,6 +1,7 @@
 # /usr/bin/python2.7
 # I'm the log buddy. I log things !
 
+
 DJANGO_LOGGING = True # I'm only implementing this lazily here, but we'd stick this constant in the settings.py of the parent app and all it into necessary pages.
 
 def PrintException():
@@ -30,6 +31,21 @@ def log_exception(err, filename="general_log.txt", exception=False):
             errorFile.write("\n" + PrintException())
         errorFile.write("\n")
         errorFile.close()
+
+def log_modified_time(filepath, errorfilename="error_file.txt"):
+    if DJANGO_LOGGING:
+        import time
+        import datetime
+        import os
+        time_seconds = os.path.getmtime(filepath)
+        time_struct = time.gmtime(time_seconds)
+        time_formatted = time.strftime("%Y-%m-%dT%H:%M:%SZ\n", time_struct)
+        errorFile = open(os.path.join(os.path.dirname(__file__), 'errors', errorfilename), "a")
+        errorFile.write(str(os.path.basename(filepath)) + " was last modified: ")
+        errorFile.write(str(time_formatted))
+        errorFile.write("\n")
+        errorFile.close()
+        
 
 
 
