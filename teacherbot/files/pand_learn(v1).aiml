@@ -1,7 +1,0 @@
-<aiml version="2.0">
-
-<category><pattern>* <set>cannot</set> <set>log on</set> <set>uni</set> <set>computers</set></pattern><template>Try reactivating your computer logon password.</template></category>
-<category><pattern>* EASE PASSWORD</pattern><template>Go here to reset your password!</template></category>
-<category><pattern>* <set>forgot</set> * EASE <set>password</set></pattern><template><srai>* EASE PASSWORD</srai></template></category>
-<category><pattern>* <set>forgot</set> <set>password</set> * EASE </pattern><template><srai>* EASE PASSWORD</srai></template></category>
-</aiml>

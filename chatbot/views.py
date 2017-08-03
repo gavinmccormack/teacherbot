@@ -396,6 +396,10 @@ def file_manager(request):
 def file_delete(request, file_id):
     """ Deletes a file """
     try:
+        #Delete from server
+        filepath = aiml_file.file_manageer.get(id=file_id).get_path
+        os.remove(filepath)
+        #Delete from database
         filename = aiml_file.file_manager.get(id=file_id).get_simplename
         file = aiml_file.file_manager.filter(id=file_id).delete()
         return HttpResponse("File Deleted: " + filename)
@@ -406,6 +410,12 @@ def file_delete(request, file_id):
 def file_delete_all(request):
     """ Deletes all files """
     try:
+        #delete files from local server storage
+        files = aiml_file.file_manager.user(request).all()
+        for file in files:
+            log.log_exception(file.get_path(), "file_paths.txt")
+            os.remove(file.get_path())
+        #delete files off database
         file = aiml_file.file_manager.user(request).delete()
         return HttpResponse("All files deleted")
     except Exception,e: 
