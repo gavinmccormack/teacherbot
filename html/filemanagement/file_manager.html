@@ -42,15 +42,35 @@ function log_format(text) {
 
 function delete_file(file_id , filename) {
 			$.get('/chatbot/'+file_id+'/file-delete/', function (data) {
-			$( '.file-log' ).append(log_format(data));
+				$( '.file-log' ).append(log_format(data));
 			});
-		 }
+			//Timeout included to ensure deleted files are registered before calling get
+			setTimeout(function(){
+				$.get("/chatbot/file-manager/ #setup-files", function(data){
+					$("#setup-files").replaceWith($(data).find("#setup-files"));
+		 		});
+		 		$.get("/chatbot/file-manager/ #all-files", function(data){
+					$("#all-files").replaceWith($(data).find("#all-files"));
+		 		});	
+			}, 500)
+}
+
 function delete_all_files() {
 			if (confirm('Are you sure you want to delete all files saved on the site?')) {
 			    $.post('/chatbot/file-manager/file-delete-all/', {  csrfmiddlewaretoken: "{{ csrf_token }}"}, function (data) {
-					$( ".file-log" ).append(log_format(delete_data));
+					$( ".file-log" ).append(log_format(data));
 					$('tr').slideUp();
-					});		
+				});	
+				//Timeout included to ensure deleted files are registered before calling get
+				setTimeout(function(){
+					$.get("/chatbot/file-manager/ #setup-files", function(data){
+						$("#setup-files").replaceWith($(data).find("#setup-files"));
+		 			});
+		 			$.get("/chatbot/file-manager/ #all-files", function(data){
+						$("#all-files").replaceWith($(data).find("#all-files"));
+		 			});	
+				}, 500)
+				
 			} else {
 			    // Do nothing - user has clicked no
 			}
@@ -98,7 +118,7 @@ document.getElementById("tab-setuplist").click();
 </ul>
 
 <div id="setup-list" class="tabcontent">
-
+<div id="setup-files">
 
 					{% if setup_files %}
 			        <ul id="file-index" class="aimlfile-index container-fluid index-listing">
@@ -119,10 +139,11 @@ document.getElementById("tab-setuplist").click();
 			            </div>
 			        {% endif %}
 
-
+</div>
 </div>
 
 <div id="file-list" class="tabcontent">
+<div id="all-files">
 		{% if aimls %}
             <ul id="file-index" class="aimlfile-index container-fluid index-listing">
                 {% for aiml in aimls  %} 
@@ -139,6 +160,7 @@ document.getElementById("tab-setuplist").click();
                 <strong>No Files found</strong>
             </div>
         {% endif %}
+</div>
 </div>
 
 

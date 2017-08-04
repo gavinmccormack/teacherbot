@@ -27,7 +27,8 @@ class aiml_file(models.Model):
 
     def get_path(self):
         """ Return full system path """
-        return os.path.join(MEDIA_ROOT, self.docfile.name)
+        file_path = os.path.join(MEDIA_ROOT, self.docfile.name)
+        return file_path
 
     def __str__(self):              # __unicode__ on Python 2
         return self.docfile.name

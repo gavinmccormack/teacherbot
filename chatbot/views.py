@@ -387,8 +387,7 @@ def check_twitter_auth(request, cbot_id):
 @login_required
 def file_manager(request):
     """ Loads the file management page for deleting/viewing files """
-    userFiles =  aiml_file.file_manager.user(request)
-    context = { 'aimls' : userFiles ,
+    context = { 'aimls' : aiml_file.file_manager.user(request),
                 'setup_files' : aiml_config.config_manager.user(request) }
     return render(request, "filemanagement/file_manager.html", context)
 
@@ -396,13 +395,16 @@ def file_manager(request):
 def file_delete(request, file_id):
     """ Deletes a file """
     try:
-        #Delete from server
-        filepath = aiml_file.file_manageer.get(id=file_id).get_path
-        os.remove(filepath)
-        #Delete from database
+        file = aiml_file.file_manager.get(id=file_id)
         filename = aiml_file.file_manager.get(id=file_id).get_simplename
-        file = aiml_file.file_manager.filter(id=file_id).delete()
-        return HttpResponse("File Deleted: " + filename)
+        #Delete from database
+        file.delete()
+        #Delete from server
+        filepath = file.get_path()
+        log.log_exception(filepath, "filepath.txt")
+        os.remove(filepath)
+        #Updating file info on page
+        return HttpResponse("File Deleted: " + filename + ".")
     except Exception,e: 
         return HttpResponse("We were unable to delete the file due to an error: " + str(e))
 
@@ -410,14 +412,14 @@ def file_delete(request, file_id):
 def file_delete_all(request):
     """ Deletes all files """
     try:
+        #delete files off database
+        file = aiml_file.file_manager.user(request).delete()
         #delete files from local server storage
         files = aiml_file.file_manager.user(request).all()
         for file in files:
-            log.log_exception(file.get_path(), "file_paths.txt")
             os.remove(file.get_path())
-        #delete files off database
-        file = aiml_file.file_manager.user(request).delete()
-        return HttpResponse("All files deleted")
+        #Updating file info on page
+        return HttpResponse("All files deleted.")
     except Exception,e: 
         return HttpResponse("We were unable to delete the files due to an error: " + str(e))
 
