@@ -395,7 +395,7 @@
 				<div class="help-tip help-dark">
 					<p>These are the AIML files which are currently assigned to your chatbot. By clicking "Load these files..." you will load these files into the active chatbot on the right.</p>
 				</div>
-			</h4>
+		</h4>
 		<div class="border-segment-wrap">
 			
 
@@ -454,6 +454,48 @@
 						</span>
 						<span class="sr-only">Loading...</span>
 				</p>
+			</div>
+		</div>
+		</div>
+	</section>
+
+	<section class="cbot-info cbot-file-list col-md-6"> 
+		<div class="border-segment segment-blue">
+		<h4 class="bg-primary">Files in Chatbot Setups
+				<div class="help-tip help-dark">
+					<p>These are the AIML files which are currently assigned to your chatbot. Click SYNC to sync your files.</p>
+				</div>
+		</h4>
+		<div class="border-segment-wrap">
+			
+
+			<div>	
+
+				<!-- Attached Setup "Edit"/"Listing" Menu -->
+				<div class="setup-file-index">
+					{% if chatbot.aiml_config %}
+			            <div class="c-man-setup-index">
+			                {% for aiml in chatbot.aiml_config.all %} 
+			                	<div class="c-man-setup-group">
+			                		<h6>{{ aiml.title }} <a class="edit-button-small {{ aiml.is_public|yesno:"display-none," }}" href="/admin/chatbot/aiml_config/{{ aiml.id }}/" title="Edit this chatbot's settings"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+			                		</h6>
+			                		{% for file in aiml.get_files %}
+			                    	<div class="file-block">{{ file.get_simplename }}</div>
+			                	{% endfor %}
+			                	</div>
+			                {% endfor %}
+			            </div>
+			        {% else %}
+			            <div class="bg-success not-found">
+			                <small>No setup configurations are attached to this chatbot. Add some via the chatbot settings or create a new one <a href="">here</a></small>
+			            </div>
+			        {% endif %}
+	    		</div>
+
+	    		<p><button class="btn btn-primary btn-sync-chatbot" onclick="upload_bot_config({{chatbot.id}})">Sync files with your chatbot</button>
+				</p>
+	    		<!-- END Attached Setup "Edit"/"Listing" Menu -->
+					
 			</div>
 		</div>
 		</div>

@@ -105,11 +105,11 @@ Your Chatbots & Twitterbots | {{ site_title|default:_('Chatbot Administration') 
                 {% endfor %}
             </ul>
         {% elif twitterbots %}
-            <div class="bg-success not-found">
+            <div class="not-found">
                 <strong>Click on the add button below to create a new chatbot.</strong>
             </div>    
         {% else %}
-            <div class="bg-success not-found">
+            <div class="not-found">
                 <strong>You don't currently have any Chatbots configured! Go to the <a class="text-warning" href="/chatbot/get-started/">get started</a> section, or click on the add button below.</strong>
             </div>
         {% endif %}
@@ -161,7 +161,7 @@ Your Chatbots & Twitterbots | {{ site_title|default:_('Chatbot Administration') 
                 {% endfor %}
             </ul>
         {% else %}
-            <div class="bg-success not-found">
+            <div class="not-found">
                 <strong>You don't currently have any twitterbots configured! If you've built a chatbot, click on the button below to add twitter functionality!</strong>
             </div>
         {% endif %}

@@ -382,14 +382,14 @@ def check_twitter_auth(request, cbot_id):
 
 
 ################################################################
-###################### File Manager ############################
+###################### AIML Wizard #############################
 
 @login_required
-def file_manager(request):
-    """ Loads the file management page for deleting/viewing files """
+def aiml_wizard(request):
     context = { 'aimls' : aiml_file.file_manager.user(request),
-                'setup_files' : aiml_config.config_manager.user(request) }
-    return render(request, "filemanagement/file_manager.html", context)
+                'setup_files' : aiml_config.config_manager.user(request) 
+                }
+    return render(request, "aimlwizard/aiml_wizard_home.html", context)
 
 @login_required
 def file_delete(request, file_id):
@@ -439,15 +439,6 @@ def file_add_new(request):
     else:
         form = addFileForm()
     return render(request, 'filemanagement/add_file.html', {'form': form})
-
-################################################################
-###################### AIML Wizard #############################
-@login_required
-def aiml_wizard(request):
-    context = RequestContext(request)
-    context['aiml_configs'] = aiml_config.config_manager.user(request)
-    return render_to_response('aimlwizard/aiml_wizard_home.html', context)
-
 
 ################################################################
 ###################### STATIC PAGES ############################

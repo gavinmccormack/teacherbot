@@ -25,11 +25,6 @@ urlpatterns = [
     url(r'^bot-hub/$', views.bot_hub, name='bot_hub'),
     url(r'^get-started-old/$', views.get_started_old, name='get_started_old'),
 
-	# File Manager 
-	url(r'^file-manager/$', views.file_manager, name='file_manager'),
-	url(r'^(?P<file_id>[0-9]+)/file-delete/$', views.file_delete, name='file_delete'),
-	url(r'^file-manager/file-delete-all/$', views.file_delete_all, name='file_delete'),
-
 	# File Pages - Not currently needed as file handling done through admin pages
 	url(r'^add-file/$', views.file_add_new, name='file_add_new'),
 
@@ -38,7 +33,9 @@ urlpatterns = [
     
     # AIML Wizard
     url(r'^aiml_wizard/$', views.aiml_wizard, name='aiml_wizard'),
-    
+    url(r'^(?P<file_id>[0-9]+)/file-delete/$', views.file_delete, name='file_delete'),
+	url(r'^aiml_wizard/file-delete-all/$', views.file_delete_all, name='file_delete'),
+
 	# Internal Actions 
 	url(r'^(?P<cbot_id>[0-9]+)/bot-enabled/$', views.chatbot_activate_toggle, name='chatbot_toggle'),
 	url(r'^(?P<cbot_id>[0-9]+)/get-chatlog/$', views.chatbot_get_chatlog, name='chatbot_get_chatlog'),
