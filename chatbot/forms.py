@@ -1,12 +1,8 @@
-
 from django.forms import ModelForm, Form, ModelChoiceField, Textarea, ModelMultipleChoiceField, ValidationError, FileField, CharField
 from .models import cbot, aiml_config, aiml_file
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib import admin
 from script.pandora_actions import create_bot
-
-
-
 
 class chatbot_form(ModelForm):
 	class Meta:
@@ -23,8 +19,8 @@ class twitterbot_form(ModelForm):
 	class Meta:
 		model = cbot
 		fields = ['twit_hashtags','twit_token',
-		'twit_token_secret','twit_c_key','twit_c_secret', 'twit_capable']
-		exclude = ('author','enabled','uploaded_files', 'title', 'pandora_name','aiml_config')
+		'twit_token_secret','twit_c_key','twit_c_secret']
+		exclude = ('author','enabled','uploaded_files', 'title', 'pandora_name','aiml_config', 'twit_capable')
 		help_texts = {
 		'twit_hashtags': 'The hashtags and/or keywords you would like people to use on Twitter to address your chatbot. Hashtags have to be preceded by a "#", keywords can stand alone. You can use more than one hashtag/keyword or a combination of both. If you do so, separate them with a comma, e.g. "#teacherbot_edinburgh, #tb_edinburgh". Please note that keywords and hashtags should be pretty much unique; if you use a hashtag like "#chatbot", your chatbot will reply to all tweets with this hashtag and there will be a lot! Be careful not to spam the users or your application might be blocked by Twitter.',
 		'twit_token': 'You receive the Access Token when you create your Twitter App. Paste it here.',

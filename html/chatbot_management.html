@@ -144,9 +144,6 @@
                     $("#sync-btn").removeClass("btn-unsynced").addClass("btn-synced");
                     $("#sync-btn").text("Your files are synced with the bot!");
                 }
-                else{
-                    $("#help-tipper").removeClass("help-dark").addClass("help-dark-red");
-                }
             });
          }
 
@@ -272,16 +269,17 @@
         <!--- End  CONTENTS -->
         <div id="console" class="tabcontent">
             <p class="pandora-logging"></p>
-        </div>
-        <div id="console" class="bg-primary">
+            <div class="talk-primary">
               <input type="text" id="talk-entry"/>
               <p><button class="btn btn-primary" id="talk-button" onclick="talkto_bot({{ chatbot.id }} , $('#talk-entry').val())"> Talk </button></p>
-        </div>   
+        	</div>   
+        </div>
+        
 
         <div id="settings" class="tabcontent"> 
             <!-- Begin Twitter/Pandora Settings display -->
             <div class="pandora-details">
-                <table class="table table-inverse">
+            	<table class="table table-inverse">
                   <tbody>
                     <tr>
                       <td>Created on</td>
@@ -294,27 +292,13 @@
                   </tbody>
 
                 </table>
+                <p>
+            		<a class="edit-link btn btn-action btn-primary" href="/chatbot/{{ chatbot.id }}/edit"> Edit Chatbot</a>
+            	</p>
             </div>
+            	
             <!-- END Twitter/Pandora Settings display -->
             </div>
-
-            <!-- Manual upload has been removed from the UI due to generally confusing users. 
-            <div id="manualupload" class="tabcontent">
-                <h4 class="bg-primary"><i class="fa fa-file" aria-hidden="true"></i> Manual Upload</h4>
-                <div class="upload-form">
-                    <form action="./pa-archive/" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                        <input type="file" class="btn btn-default btn-file" name="archivefile" id="archivefile" title="Upload From PC" value= "Upload a file (ZIP, or AIML)">
-                        <small>Currently accepts ZIP files. You will have to allow some time for the request to finish if you are uploading a large archive. Please note these files will not be saved in your Setups <br />
-                            <div class="help-tip" style="top:-10px">
-                                <p>Files uploaded via this method will not be saved on this website, but will be added directly to the pandora bot. This may be ideal for quick testing.</p>
-                            </div>
-                        </small>
-                        <button class="btn bg-primary btn-primary btn-block" target="_blank" type="submit" value="Submit" >Upload File</button>
-                    </form>
-                </div>
-                </div>
-                <!-- End Upload Form -->
 
             <div id="chatlog" class="tabcontent">
                 <p class="chatbot-logging"></p>
@@ -331,17 +315,20 @@
                     <a class="cbot-man-add-setup pull-right">Change <i class="fa fa-plus-square" aria-hidden="true"></i></a>
                     <ul class="cbot-sub-menu">
                     <li>
-                        <h6 class="center-text">Add & Remove Setups from Chatbot <a class="cbot-man-add-setup pull-right">
+                        <h6 class="center-text">Add & Remove Setups<a class="cbot-man-add-setup pull-right">
                         <i class="fa fa-minus-square close-menu-icon" title="Close Menu" aria-hidden="true"></i></a>
                         </h6>
                     </li>
                         {% if aiml_configs %}
                             {% for aiml in aiml_configs %} 
-                                <div class="config-item-wrap item-wrap-2">
-                                        <li class="container-fluid"> <div class="col-md-5"> {{ aiml.title }}</div>
-                                            <div class="col-md-1"><a title="Add this setup to the current chatbot" href="add-setup/{{aiml.id}}"><i class="fa fa-plus text-white"  aria-hidden="true"></i> </div></a>
-                                            <div class="col-md-1"><a title="Remove this setup from the current chatbot" href="remove-setup/{{aiml.id}}"><i class="fa fa-minus text-white"  aria-hidden="true"></i> </div></a>
-                                            <div class="col-md-4" title="Number of files in this setup"> <span class="pull-rights">{{ aiml.file_counts }} <i class="fa fa-file icon-border" aria-hidden="true"></i> </span></div>
+                                <div class="config-item-wrap item-wrap-2" style="padding-top: 7px;">
+                                        <li class="container-fluid"> <div class="col-md-4"> {{ aiml.title }}</div>
+                                        	<div class="col-md-3" title="Number of files in this setup"> <span class="pull-rights">{{ aiml.file_counts }} <i class="fa fa-file icon-border" aria-hidden="true"></i> </span></div>
+                                            <div class="col-md-5">
+                                            <a title="Remove this setup from the current chatbot" href="remove-setup/{{aiml.id}}"><i class="fa fa-minus text-white"  aria-hidden="true"></i></a>
+                                            <a title="Add this setup to the current chatbot" href="add-setup/{{aiml.id}}"><i class="fa fa-plus text-white"  aria-hidden="true"></i> </a>
+                                            </div>
+          
                                         </li>
 
                             </div>
@@ -384,7 +371,7 @@
         <div id="file-sync-box" class="border-segment segment-blue">
         <h4 class="bg-primary">Files in Chatbot Setups
                 <div id="help-tipper" class="help-tip help-dark">
-                    <p>These are the AIML files which are currently assigned to your chatbot. Click SYNC to sync your files.</p>
+                    <p>These are the AIML files which are currently assigned to your chatbot. Remember to sync your files!</p>
                 </div>
         </h4>
         <div class="border-segment-wrap">

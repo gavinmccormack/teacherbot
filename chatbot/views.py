@@ -62,10 +62,11 @@ def add_twitterbot(request, cbot_id):
     """ Chatbot settings edit """
     chatbot = get_object_or_404(cbot, id=cbot_id)
     if request.method == "POST":
-        form = twitterbot_form(request.POST, instance=chatbot, initial={'twit_capable': True})
+        form = twitterbot_form(request.POST, instance=chatbot)
         if form.is_valid():
             form.author = request.user
             chatbot = form.save(commit=False)
+            chatbot.twit_capable = True
             chatbot.save()
             form.save_m2m()
             return HttpResponseRedirect(reverse('bot_hub'))
