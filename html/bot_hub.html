@@ -83,6 +83,9 @@ Your Chatbots & Twitterbots | {{ site_title|default:_('Chatbot Administration') 
                     <h4>
                       {{ chatbot.title }}  
                     </h4>
+                    
+                    <img src="/static/images/teacherbot-chatbot-icon.png" alt="Chatbot Image" style="width:64px; height:96px;">
+                    
                 </div>
                 </a>
                 </div>
@@ -117,30 +120,15 @@ Your Chatbots & Twitterbots | {{ site_title|default:_('Chatbot Administration') 
             <ul class="twitbot-index container-fluid  index-listing">
                 {% for twitterbot in twitterbots %} 
                 <div class="col-sm-6 col-lg-3">
+                <a href="/chatbot/twitterbot/{{ twitterbot.id }}/">
                 <div class="twitbot-item-wrap item-wrap wrap-blue">
-                    <h4 class="index-item-header">
-                        <a href="/chatbot/{{ twitterbot.id }}" title="Go to the twitterbot control panel">
-                            <i title="{{ twitterbot.enabled|yesno:"Chatbot Active, Chatbot Offline" }}" id="enabled-icon" class="fa fa-user {{ twitterbot.enabled|yesno:"icon-active," }}" aria-hidden="true"></i>
-                            {{ twitterbot.title }}
-                        </a>
-                        <a class="edit-button-small" href="/chatbot/{{ twitterbot.id }}/edit/" title="Edit this twitterbot's settings"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                        <a class="edit-button-small" href="/chatbot/{{ twitterbot.id }}/" title="Go to the twitterbot's control panel"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <h4>
+                          <i title="{{ twitterbot.enabled|yesno:"Chatbot Active, Chatbot Offline" }}" id="enabled-icon" class="fa fa-user {{ twitterbot.enabled|yesno:"icon-active," }}" aria-hidden="true"></i>
+                          {{ twitterbot.title }}
+                    
                     </h4>
-                    <div class="twitbot-item-contents">
-                        <!-- Load in attached configurations, but don't provide a clickable link or the same display if they are not edittable -->
-                        {% if twitterbot.aiml_config.all %}
-                            {% for aiml in twitterbot.aiml_config.all %}
-
-                                <{{ aiml.is_public|yesno:"p,a" }} title="{{ aiml.is_public|yesno:"This is a public setup you cannot edit, Edit this Setup" }} "
-                                 class="{{ aiml.is_public|yesno:"normal-cursor," }} btn btn-info file-block" href="/admin/chatbot/aiml_config/{{ aiml.id }}">
-                                    <small class="list-title">{{ aiml.title }}</small> <br/>
-                                </{{ aiml.is_public|yesno:"p,a" }}>
-                            {% endfor %}
-                        {% else %}
-                            <small class="list-title file-block">No Setups Attached</small> <br/>
-                        {% endif %}
-                    </div>
                 </div>
+                </a>
                 </div>
                 {% endfor %}
             </ul>

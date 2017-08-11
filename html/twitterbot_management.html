@@ -67,10 +67,10 @@
 		 function toggle_bot_ui() {
 		 	// Change button text, change icon
 		 	toggle_button = $(".chatbot-toggle-button");
-			if (toggle_button.text() === "Activate") {
+			if (toggle_button.text() === "Activate Twittermode") {
 				$('#enabled-icon').addClass("icon-active");
-				toggle_button.text("Deactivate");
-			} else { toggle_button.text("Activate"); 
+				toggle_button.text("Deactivate Twittermode");
+			} else { toggle_button.text("Activate Twittermode"); 
 			$('#enabled-icon').removeClass("icon-active");}
 			
 		 }
@@ -119,12 +119,6 @@
 			});
 		 }
 
-		 function upload_bot(bot_id) {
-		 	$( ".pandora-logging" ).prepend(log_format("Your archive file is uploading; you will be returne to this page on completion."));
-			$.post('/chatbot/'+bot_id+'/pa-archive/', {  csrfmiddlewaretoken: "{{ csrf_token }}"}, function (data) {
-			$( ".pandora-logging" ).prepend(log_format(data));
-			});
-		 }
 
 		 function upload_bot_config(bot_id) {
 		 	$( ".pandora-logging" ).prepend(log_format("Starting upload of files currently in setups: {{ twitterbot.get_attached_config_names|join:' , ' }}. <br> This may take some time if you are uploading a large set of files."));
@@ -147,10 +141,32 @@
 			
 		 }
 
+		 function check_sync_status(bot_id) {
+            $.post('/chatbot/'+bot_id+'/pa-sync-status/', { csrfmiddlewaretoken: "{{ csrf_token }}"}, function (data) {
+                console.log(data);
+                if(data == "True"){
+                    $("#sync-btn").prop('disabled', true);
+                    $("#sync-btn").removeClass("btn-unsynced").addClass("btn-synced");
+                    $("#sync-btn").text("Your files are synced with the bot!");
+                }
+            });
+         }
+
 		 function load_active_files() {
 					$.get('/chatbot/'+{{ twitterbot.id }}+'/pa-list/', function (data) {
-					$( ".active-files" ).html( data.replace(/(?:\r\n|\r|\n)/g, '<br />') ); // Python STR \n's to <br>
-					});
+                        console.log(data);
+                        output = "<div class='file-list'>"
+                        data = data.split("\n");
+                        // slice to remove empty final element of array
+                        data = data.slice(0, data.length - 1);
+                        for(var i = 0; i < data.length; i++){
+                            output += " <div class='file-block'>" + "<span> " + data[i] + " </span></div>";
+                        }
+                        output += "</div>";
+                        console.log(output);
+                        console.log(data);
+                        $( ".active-files" ).html(output); // Python STR \n's to <br>
+                    });
 				}
 
 		$(document).ready(function() {
@@ -191,6 +207,7 @@
 				// Default Tab
 				document.getElementById("tab-console").click();
 				load_active_files();
+				check_sync_status(cbot_id);
 
 		});
 
@@ -245,120 +262,28 @@
 
 	</script>
 
-	<section class="cbot-status col-area col-md-4">
-			<div class="c-man-actions border-segment">
-				<h4 class="bg-primary"><i title="{{ twitterbot.enabled|yesno:"Chatbot Active, Chatbot Offline" }}" id="enabled-icon" class="fa fa-user {{ twitterbot.enabled|yesno:"icon-active," }}" aria-hidden="true"></i> {{ twitterbot.title }} </h4>
-				<div class="border-segment-wrap">
-					<input type="text" id="talk-entry"/>
-					<p><button class="btn btn-primary" id="talk-button" onclick="talkto_bot({{ twitterbot.id }} , $('#talk-entry').val())"> Talk </button></p>
-
-
-					
-
-					<p><button class="btn btn-primary btn-action chatbot-toggle-button" onclick="toggle_bot({{ twitterbot.id }})">{{ twitterbot.enabled|yesno:"Deactivate,Activate" }}</button> 
-						<div class="help-tip">
-							<p>Toggle whether your twitterbot should be actively checking for tweets and hashtags on twitter.</p>
-						</div>
-					</p>
-
-				
-					<p>
-					<a class="edit-link btn btn-action btn-primary" href="/chatbot/{{ twitterbot.id }}/edit"> Edit Chatbot</a>
-						<div class="help-tip">
-							<p>You can edit your twitterbot settings, and AIML setups assigned to it here.</p>
-					</div>
-					</p>
-
-					<p><button class="btn btn-primary btn-action" onclick="create_bot({{ twitterbot.id }})"> Compile your twitterbot</button> 
-						<div class="help-tip">
-							<p>If your twitterbot is not behaving as expected or the file views below are not correctly loading, press this. The AIML files have to be processed before the twitterbot can function</p>
-						</div>
-					</p>
-				</div>
-			</div>
-
-			<div class="c-man-setup-index border-segment">
-				<div class="border-segment-wrap">
-					<!-- Some boolean filters here to alter link status if this is a public AIML setup -->
-					<h6 class="small-heading">Attached Setups 
-					<a class="cbot-man-add-setup pull-right">Change <i class="fa fa-plus-square" aria-hidden="true"></i></a>
-					<ul class="cbot-sub-menu">
-					<li>
-						<h6 class="center-text">Add & Remove Setups from Chatbot <a class="cbot-man-add-setup pull-right">
-						<i class="fa fa-minus-square close-menu-icon" title="Close Menu" aria-hidden="true"></i></a>
-						</h6>
-					</li>
-						{% if aiml_configs %}
-	                        {% for aiml in aiml_configs %} 
-		                        <div class="config-item-wrap item-wrap-2">
-		                        		<li class="container-fluid"> <div class="col-md-5"> {{ aiml.title }}</div>
-		                                    <div class="col-md-1"><a title="Add this setup to the current twitterbot" href="add-setup/{{aiml.id}}"><i class="fa fa-plus text-white"  aria-hidden="true"></i> </div></a>
-		                                    <div class="col-md-1"><a title="Remove this setup from the current twitterbot" href="remove-setup/{{aiml.id}}"><i class="fa fa-minus text-white"  aria-hidden="true"></i> </div></a>
-		                                    <div class="col-md-4" title="Number of files in this setup"> <span class="pull-rights">{{ aiml.file_counts }} <i class="fa fa-file icon-border" aria-hidden="true"></i> </span></div>
-		                                </li>
-
-	                        </div>
-	                        {% endfor %}
-
-
-	                {% else %}
-	                    <div class="bg-success not-found">
-	                        <strong>You have no Setups for this bot, but you may create one or use other public configurations in the twitterbot edit pages.</strong>
-
-	                    </div>
-	                {% endif %}
-					</ul>
-					
-					</h6>
-					{% if twitterbot.aiml_config %}
-						
-		                {% for aiml in twitterbot.aiml_config.all %} 
-                    
-                            {% if aiml.id %}
-		                      <{{ aiml.is_public|yesno:"p,a" }} class="{{ aiml.is_public|yesno:"normal-cursor," }} btn btn-info file-block" href="/admin/chatbot/aiml_config/{{ aiml.id }}">
-		                      <small class="list-title">{{ aiml.title }}</small> <br/>
-		                      </{{ aiml.is_public|yesno:"p,a" }}>
-                            {% else %}
-                              <{{ aiml.is_public|yesno:"p,a" }} class="{{ aiml.is_public|yesno:"normal-cursor," }} btn btn-info file-block" href="/chatbot/aiml_wizard/">
-		                      </{{ aiml.is_public|yesno:"p,a" }}>
-                            {% endif %}
-		                {% endfor %}
-		        	{% else %}
-		            <div class="bg-success not-found">
-		                <small>No setup configurations are attached to this twitterbot. Add some via the twitterbot settings or create a new one <a href="">here</a></small>
-
-		            </div>
-		        	{% endif %}
-		        </div>
-        	</div>
-	</section>
-
-
 	<section class="col-md-8 col-area ">
 		<!-- Tab Menu -->
 		<ul class="tab">
-		  <li><a href="javascript:void(0)" id="tab-console" class="tablinks" onclick="openTab(event, 'console')"><i class="fa fa-comment" aria-hidden="true"></i>Log</a></li>
+		  <li><a href="javascript:void(0)" id="tab-console" class="tablinks" onclick="openTab(event, 'console')"><i class="fa fa-comment" aria-hidden="true"></i>{{ twitterbot.title }}</a></li>
 		  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'settings')"><i class="fa fa-info-circle" aria-hidden="true"></i> Settings</a></li>
-		  <li><a href="javascript:void(0)" class="tablinks" onclick="chatlog_load( {{twitterbot.id }} );openTab(event, 'chatlog');"><i class="fa fa-info-circle" aria-hidden="true"></i> Chatlog</a></li>
-		  <!-- <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'manualupload')"><i class="fa fa-upload" aria-hidden="true"></i> Manual Upload</a></li> -->
+		  <li><a href="javascript:void(0)" class="tablinks" onclick="chatlog_load( {{twitterbot.id }} );openTab(event, 'chatlog');"><i class="fa fa-info-circle" aria-hidden="true"></i> Twitter Response Log</a></li>
+		  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'setups')"><i class="fa fa-info-circle" aria-hidden="true"></i> Add/Remove Setups</a></li>
 		</ul>
 		<!-- END TAB Menu -->
 
 		<!--- End  CONTENTS -->
 		<div id="console" class="tabcontent">
 			<p class="pandora-logging"></p>
+			<div class="talk-primary">
+              <input type="text" id="talk-entry"/>
+              <p><button class="btn btn-primary btn-talk" id="talk-button" onclick="talkto_bot({{ chatbot.id }} , $('#talk-entry').val())"> Talk </button></p>
+            </div> 
 		</div>
 
 		<div id="settings" class="tabcontent"> 
 			<!-- Begin Twitter/Pandora Settings display -->
 			<div class="pandora-details">
-
-				<p>
-					<button class="btn btn-primary btn-action btn-validate" onclick="twit_check({{twitterbot.id}})">Check Twitter Details</button> &nbsp;&nbsp; 
-					<div class="help-tip">
-							<p>If the configuration is valid a message will appear in the log, if not you will have to revisit app.twitter.com and check your access token, secret, consumer keys, and consumer secret.</p>
-					</div>
-				</p>
 				<table class="table table-inverse">
 				  <tbody>
 				    <tr>
@@ -390,8 +315,13 @@
 				      <td>{{ twitterbot.twit_c_secret }}</td>
 				    </tr>
 				  </tbody>
-
 				</table>
+				<p>
+					<button class="btn btn-primary btn-action btn-validate" onclick="twit_check({{twitterbot.id}})">Check Twitter Details</button> 
+				</p>
+				<p>
+            		<a class="edit-link btn btn-action btn-primary" href="/chatbot/twitterbot/{{ twitterbot.id }}/edit">Edit Twitterbot</a>
+            	</p>
 			</div>
 			<!-- END Twitter/Pandora Settings display -->
 			</div>
@@ -417,80 +347,92 @@
 			<div id="chatlog" class="tabcontent">
 				<p class="chatbot-logging"></p>
 			</div>
+
+			<div id="setups" class="tabcontent">
+              <div class="aiml-setups">
+                  <!-- Some boolean filters here to alter link status if this is a public AIML setup -->
+                  <h6 class="small-heading">Add & Remove Setups </h6>
+                  <ul class="setups-listing">
+                      {% if aiml_configs %}
+                          {% for aiml in aiml_configs %} 
+                                <div class="config-item-wrap item-wrap-2 setups-wrapper" style="padding-top: 7px;">
+                                        <li class="container-fluid"> <div class="col-md-4"> {{ aiml.title }}</div>
+                                          <div class="col-md-3" title="Number of files in this setup"> <span class="pull-rights">{{ aiml.file_counts }} <i class="fa fa-file icon-border" aria-hidden="true"></i> </span></div>
+                                            <div class="col-md-5">
+                                            <a title="Remove this setup from the current chatbot" href="remove-setup/{{aiml.id}}"><i class="fa fa-minus text-white"  aria-hidden="true"></i></a>
+                                            <a title="Add this setup to the current chatbot" href="add-setup/{{aiml.id}}"><i class="fa fa-plus text-white"  aria-hidden="true"></i> </a>
+                                            </div>
+          
+                                        </li>
+
+                            </div>
+                            {% endfor %}
+
+
+                    {% else %}
+                        <div class="bg-success not-found">
+                            <strong>You have no Setups for this bot, but you may create one or use other public configurations in the chatbot edit pages.</strong>
+
+                        </div>
+                    {% endif %}
+                    </ul>  
+                </div>
+            </div>
 			
 			<!--- End TAB CONTENTS -->
 
 	</section>
 
-	<section class="cbot-info cbot-file-list col-md-6"> 
-		<div class="border-segment segment-blue">
-		<h4 class="bg-primary">Files in Chatbot Setups
-				<div class="help-tip help-dark">
-					<p>These are the AIML files which are currently assigned to your twitterbot. By clicking "Load these files..." you will load these files into the active twitterbot on the right.</p>
-				</div>
-			</h4>
-		<div class="border-segment-wrap">
-			
 
-			<div>
+	<section class="cbot-status col-area col-md-4">
+        	<div class="twit-activate">			
 
-				<p><button class="btn btn-primary btn-action btn-load-chatbot" onclick="upload_bot_config({{twitterbot.id}})">Load these files to your twitterbot</button>
-				</p>
-
-				
-
-				<!-- Attached Setup "Edit"/"Listing" Menu -->
-				<div class="setup-file-index">
-					{% if twitterbot.aiml_config %}
-			            <div class="c-man-setup-index">
-			                {% for aiml in twitterbot.aiml_config.all %} 
-			                	<div class="c-man-setup-group">
-			                		<h6>{{ aiml.title }} <a class="edit-button-small {{ aiml.is_public|yesno:"display-none," }}" href="/admin/chatbot/aiml_config/{{ aiml.id }}/" title="Edit this twitterbot's settings"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-			                		</h6>
-			                		{% for file in aiml.get_files %}
-			                    	<div class="file-block">{{ file.get_simplename }}</div>
-			                	{% endfor %}
-			                	</div>
-			                {% endfor %}
-			            </div>
-			        {% else %}
-			            <div class="bg-success not-found">
-			                <small>No setup configurations are attached to this twitterbot. Add some via the twitterbot settings or create a new one <a href="">here</a></small>
-			            </div>
-			        {% endif %}
-	    		</div>
-	    		<!-- END Attached Setup "Edit"/"Listing" Menu -->
-					
+					<p><button class="btn btn-primary btn-action chatbot-toggle-button" title="Toggle the bot responding to tweets" onclick="toggle_bot({{ twitterbot.id }})">{{ twitterbot.enabled|yesno:"Deactivate Twittermode,Activate Twittermode" }}</button> 
+					</p>
 			</div>
-		</div>
-		</div>
 	</section>
 
+	<section class="cbot-info cbot-file-list col-md-12 cbot-man-last"> 
+        <div id="file-sync-box" class="border-segment segment-blue">
+        <h4 class="bg-primary">Files in Chatbot Setups
+                <div id="help-tipper" class="help-tip help-dark">
+                    <p>These are the AIML files which are currently assigned to your chatbot. Remember to sync your files!</p>
+                </div>
+        </h4>
+        <div class="border-segment-wrap">
+            
 
-	<section class="cbot-info cbot-file-list col-md-6"> 
-		<div class="border-segment segment-blue">
-		<h4 class="bg-primary">Active files on Chatbot
-				<button onclick="load_active_files()" title="Refresh Active Files" class="reload-button-p-files"><i class="fa fa-refresh" aria-hidden="true"></i></button>
-				<div class="help-tip help-dark">
-					<p>These are the files currently loaded into your twitterbot's personality.</p>
-				</div>
-			</h4>
-		<div class="border-segment-wrap">
-			
+            <div>   
 
-			<div>
+                <!-- Attached Setup "Edit"/"Listing" Menu -->
+                <div class="setup-file-index">
+                    {% if chatbot.aiml_config %}
+                        <div class="c-man-setup-index">
+                            {% for aiml in chatbot.aiml_config.all %} 
+                                <div class="c-man-setup-group">
+                                    <h6>{{ aiml.title }} <a class="edit-button-small {{ aiml.is_public|yesno:"display-none," }}" href="/admin/chatbot/aiml_config/{{ aiml.id }}/" title="Edit this chatbot's settings"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    </h6>
+                                    {% for file in aiml.get_files %}
+                                    <div class="file-block">{{ file.get_simplename }}</div>
+                                {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="bg-success not-found">
+                            <small>No setup configurations are attached to this chatbot. Add some via the chatbot settings or create a new one <a href="">here</a></small>
+                        </div>
+                    {% endif %}
+                </div>
 
-				<small>These are the AIML files which your twitter bot will be using to respond to queries.</small>
-				<p class="active-files"> 
-						<span class="centered-text">
-						<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
-						</span>
-						<span class="sr-only">Loading...</span>
-				</p>
-			</div>
-		</div>
-		</div>
-	</section>
+                <p><button id="sync-btn" class="btn btn-primary btn-unsynced" onclick="upload_bot_config({{chatbot.id}})">Sync files with your chatbot!</button>
+                </p>
+                <!-- END Attached Setup "Edit"/"Listing" Menu -->
+                    
+            </div>
+        </div>
+        </div>
+    </section>
 	
-	</div>
+	
 {% endblock content %}

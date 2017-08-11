@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from chatbot.models import  pandora_settings, cbot, aiml_config, aiml_file
-from chatbot.forms import chatbot_form, twitterbot_form 
+from chatbot.forms import chatbot_form, twitterbot_create_form, twitterbot_form 
 import chatbot.script.pandora_actions as pa
 # -*- coding: utf-8 -*-
 from chatbot.script.process_manager import *
@@ -62,7 +62,7 @@ def add_twitterbot(request, cbot_id):
     """ Chatbot settings edit """
     chatbot = get_object_or_404(cbot, id=cbot_id)
     if request.method == "POST":
-        form = twitterbot_form(request.POST, instance=chatbot)
+        form = twitterbot_create_form(request.POST, instance=chatbot)
         if form.is_valid():
             form.author = request.user
             chatbot = form.save(commit=False)
@@ -74,7 +74,7 @@ def add_twitterbot(request, cbot_id):
             return HttpResponse("Sorry - there was an error the system could not handle.")
             #messages.error(request, "Error")
     else:
-        form = twitterbot_form(instance=chatbot, initial={'twit_capable': True})
+        form = twitterbot_create_form(instance=chatbot, initial={'twit_capable': True})
     return render(request, 'cbotforms/add_twitterbot.html', {'form': form, 'chatbot_id' : cbot_id })
 
 @login_required
@@ -95,6 +95,25 @@ def edit(request, cbot_id):
     else:
         form = chatbot_form(instance=chatbot)
     return render(request, 'cbotforms/edit_chatbot.html', {'form': form, 'chatbot_id' : cbot_id })
+
+@login_required
+def edit_tbot(request, cbot_id):
+    """ Chatbot settings edit """
+    twitterbot = get_object_or_404(cbot, id=cbot_id)
+    if request.method == "POST":
+        form = twitterbot_form(request.POST, instance=twitterbot)
+        if form.is_valid():
+            form.author = request.user
+            twitterbot = form.save(commit=False)
+            twitterbot.save()
+            form.save_m2m()
+            return HttpResponseRedirect(reverse('bot_hub'))
+        else:
+            return HttpResponse("Sorry - there was an error the system could not handle.")
+            #messages.error(request, "Error")
+    else:
+        form = twitterbot_form(instance=twitterbot)
+    return render(request, 'cbotforms/edit_twitterbot.html', {'form': form, 'chatbot_id' : cbot_id })
 
 @login_required
 def cbot_management(request, cbot_id):
@@ -402,7 +421,6 @@ def file_delete(request, file_id):
         file.delete()
         #Delete from server
         filepath = file.get_path()
-        log.log_exception(filepath, "filepath.txt")
         os.remove(filepath)
         #Updating file info on page
         return HttpResponse("File Deleted: " + filename + ".")
@@ -413,12 +431,13 @@ def file_delete(request, file_id):
 def file_delete_all(request):
     """ Deletes all files """
     try:
-        #delete files off database
-        file = aiml_file.file_manager.user(request).delete()
         #delete files from local server storage
         files = aiml_file.file_manager.user(request).all()
         for file in files:
+            log.log_exception(str(file.get_path()), "delete_all_test.txt")
             os.remove(file.get_path())
+        #delete files off database
+        file = aiml_file.file_manager.user(request).delete()
         #Updating file info on page
         return HttpResponse("All files deleted.")
     except Exception,e: 

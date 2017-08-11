@@ -261,8 +261,9 @@
     <section class="col-md-8 col-area ">
         <!-- Tab Menu -->
         <ul class="tab">
-          <li><a href="javascript:void(0)" id="tab-console" class="tablinks" onclick="openTab(event, 'console')"><i class="fa fa-comment" aria-hidden="true"></i>{{ chatbot.title }}</a></li>
+          <li><a href="javascript:void(0)" id="tab-console" class="tablinks" onclick="openTab(event, 'console')"><i class="fa fa-comment" aria-hidden="true"></i> {{ chatbot.title }}</a></li>
           <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'settings')"><i class="fa fa-info-circle" aria-hidden="true"></i> Settings</a></li>
+          <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'setups')"><i class="fa fa-info-circle" aria-hidden="true"></i> Add/Remove Setups</a></li>
         </ul>
         <!-- END TAB Menu -->
 
@@ -271,8 +272,8 @@
             <p class="pandora-logging"></p>
             <div class="talk-primary">
               <input type="text" id="talk-entry"/>
-              <p><button class="btn btn-primary" id="talk-button" onclick="talkto_bot({{ chatbot.id }} , $('#talk-entry').val())"> Talk </button></p>
-        	</div>   
+              <p><button class="btn btn-primary btn-talk" id="talk-button" onclick="talkto_bot({{ chatbot.id }} , $('#talk-entry').val())"> Talk </button></p>
+            </div>   
         </div>
         
 
@@ -291,39 +292,25 @@
                       </tr>
                   </tbody>
 
-                </table>
-                <p>
-            		<a class="edit-link btn btn-action btn-primary" href="/chatbot/{{ chatbot.id }}/edit"> Edit Chatbot</a>
+              </table>
+              <p>
+            		<a class="edit-link btn btn-action btn-primary" href="/chatbot/{{ chatbot.id }}/edit">Edit Chatbot</a>
             	</p>
             </div>
             	
             <!-- END Twitter/Pandora Settings display -->
             </div>
 
-            <div id="chatlog" class="tabcontent">
-                <p class="chatbot-logging"></p>
-            </div>
-            
-            <!--- End TAB CONTENTS -->
-
-    </section>
-    <section class="cbot-status col-area col-md-4">
-            <div class="c-man-setup-index border-segment">
-                <div class="border-segment-wrap">
-                    <!-- Some boolean filters here to alter link status if this is a public AIML setup -->
-                    <h6 class="small-heading">Attached Setups 
-                    <a class="cbot-man-add-setup pull-right">Change <i class="fa fa-plus-square" aria-hidden="true"></i></a>
-                    <ul class="cbot-sub-menu">
-                    <li>
-                        <h6 class="center-text">Add & Remove Setups<a class="cbot-man-add-setup pull-right">
-                        <i class="fa fa-minus-square close-menu-icon" title="Close Menu" aria-hidden="true"></i></a>
-                        </h6>
-                    </li>
-                        {% if aiml_configs %}
-                            {% for aiml in aiml_configs %} 
-                                <div class="config-item-wrap item-wrap-2" style="padding-top: 7px;">
+            <div id="setups" class="tabcontent">
+              <div class="aiml-setups">
+                  <!-- Some boolean filters here to alter link status if this is a public AIML setup -->
+                  <h6 class="small-heading">Add & Remove Setups </h6>
+                  <ul class="setups-listing">
+                      {% if aiml_configs %}
+                          {% for aiml in aiml_configs %} 
+                                <div class="config-item-wrap item-wrap-2 setups-wrapper" style="padding-top: 7px;">
                                         <li class="container-fluid"> <div class="col-md-4"> {{ aiml.title }}</div>
-                                        	<div class="col-md-3" title="Number of files in this setup"> <span class="pull-rights">{{ aiml.file_counts }} <i class="fa fa-file icon-border" aria-hidden="true"></i> </span></div>
+                                          <div class="col-md-3" title="Number of files in this setup"> <span class="pull-rights">{{ aiml.file_counts }} <i class="fa fa-file icon-border" aria-hidden="true"></i> </span></div>
                                             <div class="col-md-5">
                                             <a title="Remove this setup from the current chatbot" href="remove-setup/{{aiml.id}}"><i class="fa fa-minus text-white"  aria-hidden="true"></i></a>
                                             <a title="Add this setup to the current chatbot" href="add-setup/{{aiml.id}}"><i class="fa fa-plus text-white"  aria-hidden="true"></i> </a>
@@ -341,30 +328,15 @@
 
                         </div>
                     {% endif %}
-                    </ul>
-                    
-                    </h6>
-                    {% if chatbot.aiml_config %}
-                        
-                        {% for aiml in chatbot.aiml_config.all %} 
-                    
-                            {% if aiml.id %}
-                              <{{ aiml.is_public|yesno:"p,a" }} class="{{ aiml.is_public|yesno:"normal-cursor," }} btn btn-info file-block" href="/admin/chatbot/aiml_config/{{ aiml.id }}">
-                              <small class="list-title">{{ aiml.title }}</small> <br/>
-                              </{{ aiml.is_public|yesno:"p,a" }}>
-                            {% else %}
-                              <{{ aiml.is_public|yesno:"p,a" }} class="{{ aiml.is_public|yesno:"normal-cursor," }} btn btn-info file-block" href="/chatbot/aiml_wizard/">
-                              </{{ aiml.is_public|yesno:"p,a" }}>
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                    <div class="bg-success not-found">
-                        <small>No setup configurations are attached to this chatbot. Add some via the chatbot settings or create a new one <a href="">here</a></small>
-
-                    </div>
-                    {% endif %}
+                    </ul>  
                 </div>
             </div>
+            
+            <!--- End TAB CONTENTS -->
+
+    </section>
+    <section class="cbot-status col-area col-md-4">
+            
     </section>
 
     <section class="cbot-info cbot-file-list col-md-12 cbot-man-last"> 

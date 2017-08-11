@@ -10,11 +10,12 @@ urlpatterns = [
 	url(r'^$', views.index, name='index'),
 	url(r'^index/', views.index, name='index'),
 
-	#Chatbot Forms
+	#Chatbot/Twitterbot Forms
 	url(r'^add/', views.add, name='add_chatbot'),
 	url(r'^(?P<cbot_id>[0-9]+)/edit/$', views.edit, name='edit_chatbot'),
     url(r'^choose_bot/$', views.chatbot_to_twitterbot, name='chatbot_to_twitterbot'),
     url(r'^(?P<cbot_id>[0-9]+)/add_twitterbot/$', views.add_twitterbot, name='add_twitterbot'),
+    url(r'^twitterbot/(?P<cbot_id>[0-9]+)/edit/$', views.edit_tbot, name='edit_twitterbot'),
 	
 	# Static pages
 	url(r'^twitter-guide/$', views.twitter_guide, name='twitter_guide'),
