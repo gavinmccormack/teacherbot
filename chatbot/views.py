@@ -376,7 +376,7 @@ def chatbot_get_chatlog(request, cbot_id): #get_chatlog
         lines = queryfile.read().replace('\n','<br />')
         return HttpResponse( str( lines) ) 
     except Exception, e:
-        return HttpResponse("Chatlog for this bot wasn't found. Check that the chatbot has had active conversations.")
+        return HttpResponse("Chatlog for this bot wasn't found. Try tweeting one of it's assigned hashtags to get a response.")
 
 
 ################################################################

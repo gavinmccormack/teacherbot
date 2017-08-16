@@ -265,7 +265,7 @@
 	<section class="col-md-8 col-area ">
 		<!-- Tab Menu -->
 		<ul class="tab">
-		  <li><a href="javascript:void(0)" id="tab-console" class="tablinks" onclick="openTab(event, 'console')"><i class="fa fa-comment" aria-hidden="true"></i>{{ twitterbot.title }}</a></li>
+		  <li><a href="javascript:void(0)" id="tab-console" class="tablinks" onclick="openTab(event, 'console')"><i class="fa fa-comment" aria-hidden="true"></i> {{ twitterbot.title }}</a></li>
 		  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'settings')"><i class="fa fa-info-circle" aria-hidden="true"></i> Settings</a></li>
 		  <li><a href="javascript:void(0)" class="tablinks" onclick="chatlog_load( {{twitterbot.id }} );openTab(event, 'chatlog');"><i class="fa fa-info-circle" aria-hidden="true"></i> Twitter Response Log</a></li>
 		  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'setups')"><i class="fa fa-info-circle" aria-hidden="true"></i> Add/Remove Setups</a></li>
@@ -371,7 +371,7 @@
 
                     {% else %}
                         <div class="bg-success not-found">
-                            <strong>You have no Setups for this bot, but you may create one or use other public configurations in the chatbot edit pages.</strong>
+                            <strong>You have no Setups configured. Go to the AIML Wizard to add a setup.</strong>
 
                         </div>
                     {% endif %}
