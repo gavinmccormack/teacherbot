@@ -20,11 +20,10 @@ urlpatterns = [
     # Static pages
     url(r'^twitter-guide/$', views.twitter_guide, name='twitter_guide'),
     url(r'^pandora-guide/$', views.pandora_guide, name='pandora_guide'),
-    url(r'^playground-guide/$', views.playground_guide, name='playground_guide'),
     url(r'^first-setup-guide/$', views.first_setup_guide, name='first_setup_guide'),
     url(r'^get-started/$', views.get_started, name='get_started'),
     url(r'^bot-hub/$', views.bot_hub, name='bot_hub'),
-    url(r'^get-started-old/$', views.get_started_old, name='get_started_old'),
+
 
     # File Pages - Not currently needed as file handling done through admin pages
     url(r'^add-file/$', views.file_add_new, name='file_add_new'),

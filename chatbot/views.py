@@ -473,15 +473,11 @@ def twitter_guide(request):
 def pandora_guide(request):
     return render(request, 'information/what_is_pandora.html')
 
-def playground_guide(request):
-    return render(request, 'information/playground_editor.html')
-
 def first_setup_guide(request):
     return render(request, 'information/teacherbot_for_dummies.html')
 
 def get_started(request):
     return render(request, 'information/getting_started.html')
 
-def get_started_old(request):
-    return render(request, 'information/getting_started_old.html')
+
 

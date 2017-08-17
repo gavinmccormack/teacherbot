@@ -165,7 +165,7 @@ Your AIML Setups | {{ site_title|default:_('Chatbot Administration') }}
         <div class="border-segment segment-blue">
         <h3 class="index-heading bg-primary">Chatbot AIML Setups</h3>
             <a href="#setup-guide">
-                <div class="help-tip"></div>
+                <div class="help-tip"><p>Click here to learn about adding a setup from Pandorabots.</p></div>
             </a>
             <div id="chatbot-aiml-setups" class="border-segment-wrap">
                 {% if setup_files %}
@@ -208,23 +208,23 @@ Your AIML Setups | {{ site_title|default:_('Chatbot Administration') }}
 </section>
 
 <section>
-<div class="col-lg-12 index-wrapper">
-<div class="border-segment segment-grey">
-<h3 class="index-heading bg-primary">File Manager</h3>
+	<div class="col-lg-12 index-wrapper">
+	<div class="border-segment segment-grey">
+	<h3 class="index-heading bg-primary">File Manager</h3>
 
-<p>You are viewing <strong>{{ request.user }}</strong>'s files, these may be attached to chatbot setups. Deleting files here will have no immediate effect on active chatbots</p>
+	<p>You are viewing <strong>{{ request.user }}</strong>'s files, these may be attached to chatbot setups. Deleting files here will have no immediate effect on active chatbots</p>
 
 
-<div class="file-log"></div>
+	<div class="file-log"></div>
 
-<ul class="tab fileindex-tab">
-          <li><a href="javascript:void(0)" id="tab-setuplist" class="tablinks" onclick="openTab(event, 'setup-list')">Files in Setups</a></li>
-          <li><a href="javascript:void(0)" id="tab-filelist" class="tablinks" onclick="openTab(event, 'file-list')">All Files</a></li>
-          <button style="font-size:17px; padding:6px 10px;" class="btn-danger float-right" onclick="delete_all_files()">Delete all files</button>
-</ul>
+	<ul class="tab fileindex-tab">
+          	<li><a href="javascript:void(0)" id="tab-setuplist" class="tablinks" onclick="openTab(event, 'setup-list')">Files in Setups</a></li>
+          	<li><a href="javascript:void(0)" id="tab-filelist" class="tablinks" onclick="openTab(event, 'file-list')">All Files</a></li>
+          	<button style="font-size:17px; padding:6px 10px;" class="btn-danger float-right" onclick="delete_all_files()">Delete all files</button>
+	</ul>
 
-<div id="setup-list" class="tabcontent">
-<div id="setup-files">
+	<div id="setup-list" class="tabcontent">
+		<div id="setup-files">
 
                     {% if setup_files %}
                     <ul id="file-index" class="aimlfile-index container-fluid index-listing">
@@ -245,11 +245,11 @@ Your AIML Setups | {{ site_title|default:_('Chatbot Administration') }}
                         </div>
                     {% endif %}
 
-</div>
-</div>
+		</div>
+	</div>
 
-<div id="file-list" class="tabcontent">
-<div id="all-files">
+	<div id="file-list" class="tabcontent">
+	<div id="all-files">
         {% if aimls %}
             <ul id="file-index" class="aimlfile-index container-fluid index-listing">
                 {% for aiml in aimls  %} 
@@ -266,26 +266,26 @@ Your AIML Setups | {{ site_title|default:_('Chatbot Administration') }}
                 <strong>No Files found</strong>
             </div>
         {% endif %}
-</div>
-</div>
-</div>
-</div>
+	</div>
+	</div>
+	</div>
+	</div>
 </section>
 
 <section>
-<div class="container-fluid">
-<h3>Adding a setup</h3>
+	<div class="container-fluid">
+	<h3>Adding a setup</h3>
     <p id="setup-guide">The easiest way to add an AIML setup is to take it straight from your pandorabot. First make your way over to the <a href="https://playground.pandorabots.com/en/" target="_blank">pandorabot's playground</a>.</p>
-    <p>Locate your bot and go to the files tab.</p>
-    <div class="guide-image">
-        <img src="/static/images/upload.png">
-    </div>
-    <p>Click the download button and a zip file will begin to download on your computer.</p>
-    <div class="guide-image">
-        <img src="/static/images/download_files.png">
-    </div>
-    <p>This file (located in your downloads folder) contains all of your bots files. We are now ready to <a href="/admin/chatbot/aiml_config/add/">create our setup!</a></p>
+    <p>Locate your bot and go to the files tab. Click the download button and a zip file will begin to download on your computer. This file (located in your downloads folder) contains all of your bots files. All that's left to do is add a setup, using the zip file you just downloaded.</p> <br>
 
-</div>
+         <video width="920" height="400" controls> 
+            <source src="/static/videos/get_started/pandora_download_upload.mp4" type="video/mp4">
+            Your browser does not support our videos.
+        </video>
+        <br>
+
+    <p> We are now ready to <a href="/admin/chatbot/aiml_config/add/">create our setup!</a></p>
+
+	</div>
 </section>
 {% endblock content %}

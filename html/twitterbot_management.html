@@ -72,13 +72,21 @@
 				toggle_button.text("Deactivate Twittermode");
 			} else { toggle_button.text("Activate Twittermode"); 
 			$('#enabled-icon').removeClass("icon-active");}
-			
+			$("#twitterbot-image-container").find('img').toggle();
 		 }
+
+         function check_twitter_active() {
+            if("{{ twitterbot.enabled }}" == "True"){
+            	$("#listenbot").toggle();
+            } else {
+            	$("#sleepbot").toggle();
+            }
+         }
 
 		 function toggle_bot(bot_id) {
 			$.get('/chatbot/'+bot_id+'/bot-enabled/', function (data) {
 			$( ".pandora-logging" ).prepend(log_format(data));
-			toggle_bot_ui();
+				toggle_bot_ui();
 			});
 		 }
 
@@ -208,7 +216,7 @@
 				document.getElementById("tab-console").click();
 				load_active_files();
 				check_sync_status(cbot_id);
-
+				check_twitter_active();
 		});
 
 
@@ -385,7 +393,9 @@
 
 
 	<section class="cbot-status col-area col-md-4">
-        	<div class="twit-activate">			
+        	<div id="twitterbot-image-container" class="center-button">			
+        			<img id="sleepbot" class="sleeping-tbot" src="/static/images/teacherbot-twitterbot-sleep-icon.png" alt="Twitterbot Image" style="display:none;"> 
+        			<img id="listenbot" class="listening-tbot" src="/static/images/teacherbot-twitterbot-icon.png" alt="Twitterbot Image" style="display:none;">
 
 					<p><button class="btn btn-primary btn-action chatbot-toggle-button" title="Toggle the bot responding to tweets" onclick="toggle_bot({{ twitterbot.id }})">{{ twitterbot.enabled|yesno:"Deactivate Twittermode,Activate Twittermode" }}</button> 
 					</p>
