@@ -11,7 +11,7 @@ cryptography==1.5.2
 django-appconf==1.0.2
 django-chosen==0.1
 django-compressor==2.1
-django-debug-toolbar==1.5
+django-debug-toolbar==1.11.1
 django-extensions==1.7.4
 django-fontawesome==0.2.6
 django-multiupload==0.5.2
